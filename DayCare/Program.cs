@@ -16,60 +16,60 @@ using Newtonsoft.Json.Linq;
 using System.Configuration;
 using Microsoft.Office.Interop.Excel;
 using log4net;
+using DayCareDataModel;
 
 namespace SheetsQuickstart
 {
     class Program
     {
 
+
         static void Main(string[] args)
         {
-
-            List<DayCareModel> list = new List<DayCare.DayCareModel>();
+          
+            List<DayCareModel> list = new List<DayCareModel>();
             try
             {
-                var zipCodeList = new List<string>();
-                var file = ConfigurationManager.AppSettings.Get("zipPath").ToString();
-                var json = File.ReadAllText(file);
-                var jobj = JArray.Parse(json);
-                foreach (var r in jobj)
-                {
-                    zipCodeList.Add(r["ZipCode"].ToString());
-                }
+                Console.WriteLine("Scrapte start -" + DateTime.Now.ToString("o"));
+                ScapeDataByCountyOrZip();
+
+                Console.WriteLine("Scrapte list start -" + DateTime.Now.ToString("o"));
+                var detailList = GetAllDetailList();
+
                 #region
-                var zipCodeList1 = new List<string>();
-                var zipCodeList2 = new List<string>();
-                var zipCodeList3 = new List<string>();
+                var detailList1 = new List<ScrapeSource>();
+                var detailList2 = new List<ScrapeSource>();
+                var detailList3 = new List<ScrapeSource>();
 
                 int count = 0;
-                if (zipCodeList.Count > 10)
+                if (detailList.Count > 10)
                 {
-                    count = zipCodeList.Count / 3;
+                    count = detailList.Count / 3;
                     for (var r = 1; r <= 3; r++)
                     {
                         if (r == 1)
                         {
-                            zipCodeList1 = zipCodeList.Take(count).ToList();
+                            detailList1 = detailList.Take(count).ToList();
                         }
                         if (r == 2)
                         {
-                            zipCodeList2 = zipCodeList.Skip(count).Take(count).ToList();
+                            detailList2 = detailList.Skip(count).Take(count).ToList();
                         }
                         if (r == 3)
                         {
-                            zipCodeList3 = zipCodeList.Skip(count * 2).ToList();
+                            detailList3 = detailList.Skip(count * 2).ToList();
                         }
                     }
                 }
                 else
                 {
-                    zipCodeList1 = zipCodeList;
+                    detailList1 = detailList;
                 }
-                LogHelper.log.Info("Scrapte Data start");
-                Console.WriteLine("Scrapte Data start -" + DateTime.Now.ToString("o"));
-                Task<List<DayCareModel>> task1 = Task.Factory.StartNew(() => GetData(zipCodeList1));
-                Task<List<DayCareModel>> task2 = Task.Factory.StartNew(() => GetData(zipCodeList2));
-                Task<List<DayCareModel>> task3 = Task.Factory.StartNew(() => GetData(zipCodeList3));
+                LogHelper.log.Info("Scrapte Data detail start");
+                Console.WriteLine("Scrapte Data detail start -" + DateTime.Now.ToString("o"));
+                Task<List<DayCareModel>> task1 = Task.Factory.StartNew(() => GetDetailData(detailList1));
+                Task<List<DayCareModel>> task2 = Task.Factory.StartNew(() => GetDetailData(detailList2));
+                Task<List<DayCareModel>> task3 = Task.Factory.StartNew(() => GetDetailData(detailList3));
 
                 Task.WaitAll(task1, task2, task3);
 
@@ -78,8 +78,8 @@ namespace SheetsQuickstart
                 list.AddRange(task3.Result);
                 #endregion
 
-                Console.WriteLine("Scrapte Data finished-" + DateTime.Now.ToString("o"));
-                LogHelper.log.Info("Scrapte Data finished");
+                Console.WriteLine("Scrapte Data detail finished-" + DateTime.Now.ToString("o"));
+              
 
                 list = CompareWithPrevList(list);
 
@@ -104,110 +104,123 @@ namespace SheetsQuickstart
                 Console.ReadKey();
             }
         }
+        public static void ScapeDataByCountyOrZip()
+        {
+            LogHelper.log.Info("ScapeDataByCountyOrZip start");
+            var fileName = ConfigurationManager.AppSettings.Get("CountyZipFile").ToString();
+            var json = File.ReadAllText(fileName);
 
+            var list = JsonConvert.DeserializeObject<List<CountyZipModel>>(json);
+            DayCareScrape me = new DayCareScrape("http://www.dleg.state.mi.us");
+            foreach (var r in list)
+            {
+                if(r.UseCounty)
+                {
+                    r.County = r.County.ToUpper();
+                    var url = string.Format("/brs_cdc/rs_lfl.asp?cdc_name=&address=&cnty_name={0}&cdc_city=&cdc_zip=&ftype=DC&lic_name=&lic_nbr=&Search=Search&sorry=yes", r.County);
+                    if(!me.ExtractDayByCounty(url))
+                    {
+                        r.UseCounty = false;
+                    }
+                }
+            }
+            string nweJson = JsonConvert.SerializeObject(list);
+            System.IO.File.WriteAllText(fileName, nweJson);
+            LogHelper.log.Info("ScapeDataByCountyOrZip end");
+        }
+        public static List<ScrapeSource> GetAllDetailList()
+        {
+            LogHelper.log.Info("scrape data list start");
+            List<ScrapeSource> list = new List<ScrapeSource>();
+            var zipCodeList = new List<string>();
+            var file = ConfigurationManager.AppSettings.Get("CountyZipFile").ToString();
+            var json = File.ReadAllText(file);
+            var countyZipList = JsonConvert.DeserializeObject<List<CountyZipModel>>(json);
+            DayCareScrape me = new DayCareScrape("http://www.dleg.state.mi.us");
 
-        public static List<DayCareModel> GetData(List<string> zipCodelist, int times = 0)
+            foreach (var c in countyZipList)
+            {
+                if(c.UseCounty)
+                {
+                    Console.WriteLine("Scape by county:" + c.County);
+                    try
+                    {
+                        var url = string.Format("/brs_cdc/rs_lfl.asp?cdc_name=&address=&cnty_name={0}&cdc_city=&cdc_zip=&ftype=DC&lic_name=&lic_nbr=&Search=Search&sorry=yes", c.County);
+                        me.ExtractDayCareList(url, list, c.County, "");
+                    }
+                    catch(Exception ex)
+                    {
+                        LogHelper.log.Info("Scape by county:" + c.County + "exception:" + ex.ToString());
+                    }
+                    Console.WriteLine("Scape by county:" + c.County + "end...");
+                }
+                else
+                {
+                    foreach (var r in c.ZipCodeList)
+                    {
+                        Console.WriteLine("Scape by zipCode:" + r.ZipCode);
+                        try
+                        {
+                            var url = string.Format("/brs_cdc/rs_lfl.asp?cdc_name=&address=&cnty_name=%25&cdc_city=&cdc_zip={0}&ftype=DC&lic_name=&lic_nbr=&Search=Search&sorry=yes", r.ZipCode.ToString());
+                            me.ExtractDayCareList(url, list, c.County, r.ZipCode);
+                        }
+                        catch(Exception ex)
+                        {
+                            LogHelper.log.Info("Scape by zipCode:" + r.ZipCode + "exception:" + ex.ToString());
+                        }
+                        Console.WriteLine("Scape by zipCode:" + r.ZipCode + "end...");
+                    }
+                }
+            }
+            LogHelper.log.Info("scrape data list end");
+            return list;
+        }
+
+        public static List<DayCareModel> GetDetailData(List<ScrapeSource> list)
         {
             var resultList = new List<DayCareModel>();
             DayCareScrape me = new DayCareScrape("http://www.dleg.state.mi.us");
-            foreach (var r in zipCodelist)
+            foreach (var r in list)
             {
                 try
                 {
-                    Console.WriteLine("Start ZipCode:" + r.ToString());
-                    var url = string.Format("/brs_cdc/rs_lfl.asp?cdc_name=&address=&cnty_name=%25&cdc_city=&cdc_zip={0}&ftype=DC&lic_name=&lic_nbr=&Search=Search&sorry=yes", r.ToString());
-
-                    var dic = me.ExtractDayCareList(url);
-                    foreach (var d in dic)
-                    {
-                        try
-                        {
-                            Console.WriteLine(r + "-detail:" + d.Value);
-                            var result = me.ExtractDayCareDetailList("http://www.dleg.state.mi.us/brs_cdc/" + d.Value);
-                            result.FacilityInformation.ZipCode = r.ToString();
-                            resultList.Add(result);
-                        }
-                        catch (Exception ex)
-                        {
-                            LogHelper.log.Info(r + "-detail:" + d.Value + "exception:" + ex.ToString());
-                            if (ex.Message.IndexOf("The operation has timed out") >= 0 || ex.Message.IndexOf("无法连接到远程服务器") >= 0)
-                            {
-                                #region if time out check again
-                                try
-                                {
-                                    Console.WriteLine(r + "-detail:" + d.Value);
-                                    var result = me.ExtractDayCareDetailList("http://www.dleg.state.mi.us/brs_cdc/" + d.Value);
-                                    result.FacilityInformation.ZipCode = r.ToString();
-                                    resultList.Add(result);
-                                }
-                                catch (Exception subex)
-                                {
-                                    LogHelper.log.Info(r + "-detail:" + d.Value + "exception:" + subex.ToString());
-                                }
-                                #endregion
-                            }
-                           
-                        }
-                    }
-                    Console.WriteLine(r + "-This ZipCode End...");
+                    Console.WriteLine(BuildLogMessage(r));
+                    var result = me.ExtractDayCareDetailList("http://www.dleg.state.mi.us/brs_cdc/" + r.DetailUrl);
+                    result.FacilityInformation.County = r.County;
+                    resultList.Add(result);
                 }
                 catch (Exception ex)
                 {
-                    LogHelper.log.Info("ZipCode:" + r + "exception:" + ex.ToString());
-                    if (ex.Message.IndexOf("The operation has timed out") >= 0|| ex.Message.IndexOf("无法连接到远程服务器") >= 0)
+                    LogHelper.log.Info(BuildLogMessage(r)+ "exception:" + ex.ToString());
+                    if (ex.Message.IndexOf("The operation has timed out") >= 0 || ex.Message.IndexOf("无法连接到远程服务器") >= 0)
                     {
-                        #region if time out check again
                         try
                         {
-                            Console.WriteLine("Start ZipCode:" + r.ToString());
-                            var url = string.Format("/brs_cdc/rs_lfl.asp?cdc_name=&address=&cnty_name=%25&cdc_city=&cdc_zip={0}&ftype=DC&lic_name=&lic_nbr=&Search=Search&sorry=yes", r.ToString());
-                            var dic = me.ExtractDayCareList(url);
-                            foreach (var d in dic)
-                            {
-                                try
-                                {
-                                    Console.WriteLine(r + "-detail:" + d.Value);
-                                    var result = me.ExtractDayCareDetailList("http://www.dleg.state.mi.us/brs_cdc/" + d.Value);
-                                    result.FacilityInformation.ZipCode = r.ToString();
-                                    resultList.Add(result);
-                                }
-                                catch (Exception subex)
-                                {
-                                    LogHelper.log.Info(r + "-detail:" + d.Value + "exception:" + subex.ToString());
-                                    if (ex.Message.IndexOf("The operation has timed out") >= 0)
-                                    {
-                                        #region if time out check again
-                                        try
-                                        {
-                                            Console.WriteLine(r + "-detail:" + d.Value);
-                                            var result = me.ExtractDayCareDetailList("http://www.dleg.state.mi.us/brs_cdc/" + d.Value);
-                                            result.FacilityInformation.ZipCode = r.ToString();
-                                            resultList.Add(result);
-                                        }
-                                        catch (Exception subsubex)
-                                        {
-                                            LogHelper.log.Info(r + "-detail:" + d.Value + "exception:" + subsubex.ToString());
-                                        }
-                                        #endregion
-                                    }
-                                    
-                                }
-                            }
-                           
-                            Console.WriteLine(r + "-This ZipCode End...");
+                            Console.WriteLine(BuildLogMessage(r));
+                            var result = me.ExtractDayCareDetailList("http://www.dleg.state.mi.us/brs_cdc/" + r.DetailUrl);
+                            result.FacilityInformation.ZipCode = r.ToString();
+                            resultList.Add(result);
                         }
-                        catch(Exception tiemoutEx)
+                        catch (Exception subex)
                         {
-                            LogHelper.log.Info("ZipCode:" + r + "exception:" + tiemoutEx.ToString());
+                            LogHelper.log.Info(BuildLogMessage(r) + "exception:" + subex.ToString());
                         }
-                        #endregion
                     }
-                    
+
                 }
+
+                Console.WriteLine(BuildLogMessage(r) + "- End...");
             }
+
             return resultList;
         }
+        public static string BuildLogMessage(ScrapeSource model)
+        {
+            var county = string.IsNullOrEmpty(model.County) ? "" : model.County;
+            var zipCode = string.IsNullOrEmpty(model.ZipCode) ? "" : model.ZipCode;
+            return string.Format("County:{0}-ZipCode{1}-Detail{2}", county, zipCode, model.DetailUrl);
 
+        }
 
         public static List<DayCareModel> CompareWithPrevList(List<DayCareModel> list)
         {

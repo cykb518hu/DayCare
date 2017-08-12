@@ -1,4 +1,5 @@
-﻿using Google.Apis.Auth.OAuth2;
+﻿using DayCareDataModel;
+using Google.Apis.Auth.OAuth2;
 using Google.Apis.Services;
 using Google.Apis.Sheets.v4;
 using Google.Apis.Sheets.v4.Data;
@@ -16,7 +17,6 @@ namespace DayCare
 {
     class GoogleSheetApi
     {
-        public string workSheetName = string.Empty;
         public SheetsService AuthorizeGoogleApp()
         {
             string[] Scopes = { SheetsService.Scope.Spreadsheets };
@@ -49,14 +49,21 @@ namespace DayCare
 
         public void CreateNewSheet(List<DayCareModel> list)
         {
-            InitialSheet();
-            UpdateSheet(list);
+            foreach(var r in list.GroupBy(x=>x.FacilityInformation.County))
+            {
+                var subList = list.Where(x => x.FacilityInformation.County.Equals(r.Key)).ToList();
+                var workSheetName = DateTime.Now.ToString("yyyy-MM-dd HH-mm-ss");
+                var spreadsheetId = ConfigurationManager.AppSettings[r.Key.ToUpper()];// "1gXw3lPDojKWwtzRVLwSkBD0vUzJtoWnKVbY5cbHvaOg";
+                InitialSheet(workSheetName, spreadsheetId);
+                UpdateSheet(subList, workSheetName, spreadsheetId);
+            }
+            
         }
-        public void InitialSheet()
+
+
+        public void InitialSheet(string workSheetName, string spreadsheetId)
         {
             var service = AuthorizeGoogleApp();
-            workSheetName = DateTime.Now.ToString("yyyy-MM-dd HH-mm-ss");
-            string spreadsheetId = ConfigurationManager.AppSettings["sheetId"];// "1gXw3lPDojKWwtzRVLwSkBD0vUzJtoWnKVbY5cbHvaOg";
             var addSheetRequest = new AddSheetRequest();
             addSheetRequest.Properties = new SheetProperties();
             addSheetRequest.Properties.Title = workSheetName;
@@ -70,17 +77,16 @@ namespace DayCare
                 AddSheet = addSheetRequest
          
             });
-
             var batchUpdateRequest =
                 service.Spreadsheets.BatchUpdate(batchUpdateSpreadsheetRequest, spreadsheetId);
 
             batchUpdateRequest.Execute();
         }
 
-        public void UpdateSheet(List<DayCareModel> list)
+        public void UpdateSheet(List<DayCareModel> list, string workSheetName, string spreadsheetId)
         {
             var service = AuthorizeGoogleApp();
-            String spreadsheetId = ConfigurationManager.AppSettings["sheetId"];// "1gXw3lPDojKWwtzRVLwSkBD0vUzJtoWnKVbY5cbHvaOg";
+
             String range = string.Format("{0}!{1}", workSheetName, "A:AA"); //"工作表1!A1:E";
             ValueRange valueRange = new ValueRange();
             valueRange.Range = range;

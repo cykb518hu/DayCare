@@ -1,11 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.26228.9
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DayCare", "DayCare\DayCare.csproj", "{1ED4DE99-D3B9-4C3B-A592-EF7F3A221154}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZipCodeScrape", "ZipCodeScrape\ZipCodeScrape.csproj", "{F9206FD7-ACBA-49E3-9D58-1C0533496B1B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DayCareModel", "DayCareModel\DayCareModel.csproj", "{8BA4647C-E183-4F19-9CC8-E2C729457DA5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{F9206FD7-ACBA-49E3-9D58-1C0533496B1B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F9206FD7-ACBA-49E3-9D58-1C0533496B1B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F9206FD7-ACBA-49E3-9D58-1C0533496B1B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8BA4647C-E183-4F19-9CC8-E2C729457DA5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8BA4647C-E183-4F19-9CC8-E2C729457DA5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8BA4647C-E183-4F19-9CC8-E2C729457DA5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8BA4647C-E183-4F19-9CC8-E2C729457DA5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

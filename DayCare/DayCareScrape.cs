@@ -1,4 +1,5 @@
-﻿using HtmlAgilityPack;
+﻿using DayCareDataModel;
+using HtmlAgilityPack;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,10 +17,19 @@ namespace DayCare
             home = url;
         }
 
-        public Dictionary<string, string> ExtractDayCareList(string query)
+        public bool ExtractDayByCounty(string query)
         {
             var url = home + query;
-            Dictionary<string, string> dic = new Dictionary<string, string>();
+            HtmlDocument doc = web.Load(url);
+            if(doc.DocumentNode.InnerText.IndexOf("Records Found : 200")>0)
+            {
+                return false;
+            }
+            return true;
+        }
+        public void ExtractDayCareList(string query, List<ScrapeSource> list, string county,string zipCode)
+        {
+            var url = home + query;
             HtmlDocument doc = web.Load(url);
             HtmlNodeCollection dayCareCenterNodes = doc.DocumentNode.SelectNodes("//a[contains(@href,'CDC_LIC_NBR')]");
 
@@ -27,38 +37,35 @@ namespace DayCare
             {
                 foreach (HtmlNode node in dayCareCenterNodes)
                 {
-                  
-                    string Url = node.Attributes["href"].Value;
-                    string name = node.InnerText;
-                    if (dic.ContainsKey(name))
+                    string href = node.Attributes["href"].Value;
+                    if (list.Any(x => x.DetailUrl.Equals(href)))
                     {
                         continue;
                     }
-                    dic.Add(name, Url);
+                    var model = new ScrapeSource();
+                    model.DetailUrl = href;
+                    model.County = county;
+                    model.ZipCode = zipCode;
+                    list.Add(model);
                 }
             }
-            if (dic.Count == 20)
+            var nextPageNode = doc.DocumentNode.SelectSingleNode("//img[contains(@src,'next.gif')]");
+            if (nextPageNode != null)
             {
-                var nextPage = doc.DocumentNode.SelectNodes("//a[contains(@href,'/brs_cdc/rs_lfl.asp')]");
-
-                if (nextPage.Any(x => x.Attributes["href"].Value.EndsWith("offset=20")))
-                {
-                    query += "&offset=20";
-                    foreach (var r in ExtractDayCareList(query))
-                    {
-                        if (dic.ContainsKey(r.Key))
-                        {
-                            continue;
-                        }
-                        dic.Add(r.Key, r.Value);
-                    }
-                }
+               
+                var nextUrl = nextPageNode.ParentNode.Attributes["href"].Value;
+                LogHelper.log.Info("next page:" + nextUrl);
+                ExtractDayCareList(nextUrl, list, county, zipCode);
             }
-            return dic;
         }
         public DayCareModel ExtractDayCareDetailList(string url)
         {
             var model = new DayCareModel();
+            model.FacilityInformation = new FacilityInfo();
+            model.DaysOpen = new DaysOpen();
+            model.LicenseeInformation = new LicenseeInfo();
+            model.LicenseInformation = new LicenseInfo();
+            model.ServicesOffered = new ServicesOffered();
             HtmlDocument doc = web.Load(url);
             HtmlNodeCollection dayCareCenterNodes = doc.DocumentNode.SelectNodes("//table[@cellspacing='5']");
 
@@ -138,59 +145,5 @@ namespace DayCare
 
         }
     }
-    
-
-    public class DayCareModel
-    {
-        public FacilityInfo FacilityInformation { get; set; }
-        public LicenseeInfo LicenseeInformation { get; set; }
-        public LicenseInfo LicenseInformation { get; set; }
-        public DaysOpen DaysOpen { get; set; }
-        public ServicesOffered ServicesOffered { get; set; }
-    }
-    public class FacilityInfo
-    {
-        public string Status { get; set; }
-        public string Name { get; set; }
-        public string Street { get; set; }
-        public string City { get; set; }
-        public string State { get; set; }
-        public string ZipCode { get; set; }
-        public string County { get; set; }
-        public string Phone { get; set; }
-        public string LicenseStatus { get; set; }
-        public int ZipOrder { get; set; }
-    }
-
-    public class LicenseeInfo
-    {
-        public string Name { get; set; }
-        public string Address { get; set; }
-        public string Phone { get; set; }
-    }
-
-    public class LicenseInfo
-    {
-        public string Number { get; set; }
-        public string FacilityType { get; set; }
-        public string Capacity { get; set; }
-        public string EffectiveDate { get; set; }
-        public string ExpirationDate { get; set; }
-        public string PeriodOfOperation { get; set; }
-    }
-    public class DaysOpen
-    {
-        public string Sunday { get; set; }
-        public string Monday { get; set; }
-        public string Tuesday { get; set; }
-        public string Wednesday { get; set; }
-        public string Thursday { get; set; }
-        public string Friday { get; set; }
-        public string Saturday { get; set; }
-    }
-    public class ServicesOffered
-    {
-        public string FullDayProgram { get; set; }
-        public string Provides { get; set; }
-    }
+  
 }

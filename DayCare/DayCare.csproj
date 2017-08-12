@@ -97,6 +97,7 @@
     <None Include="App.config">
       <SubType>Designer</SubType>
     </None>
+    <None Include="CountyZip.json" />
     <None Include="PrevList - Copy.json" />
     <None Include="PrevList.json" />
     <None Include="client_secret.json">
@@ -104,6 +105,15 @@
     </None>
     <None Include="packages.config" />
     <None Include="Tasks.docx" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DayCareModel\DayCareModel.csproj">
+      <Project>{8ba4647c-e183-4f19-9cc8-e2c729457da5}</Project>
+      <Name>DayCareModel</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="TextFile1.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

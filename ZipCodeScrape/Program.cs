@@ -1,8 +1,12 @@
-﻿using HtmlAgilityPack;
+﻿
+using DayCareDataModel;
+using HtmlAgilityPack;
 using Newtonsoft.Json;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Configuration;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,28 +17,44 @@ namespace ZipCodeScrape
     {
         static void Main(string[] args)
         {
-            var filePath = ConfigurationManager.AppSettings.Get("ZipCodePath").ToString();
-            var url = "http://www.bestplaces.net/find/zip.aspx?st=mi&county=26163";
+            var countyZip = new CountyZipModel();
+            var countyCode = ConfigurationManager.AppSettings.Get("countyCode").ToString();
+
+            countyZip.CountyCode = countyCode;
+            countyZip.County = ConfigurationManager.AppSettings.Get("county").ToString().ToUpper();
+            countyZip.ZipCodeList = new List<ZipCodeModel>();
+            var url = string.Format("http://www.bestplaces.net/find/zip.aspx?st=mi&county={0}", countyCode);
             var web = new HtmlWeb();
             HtmlDocument doc = web.Load(url);
             HtmlNodeCollection nodes = doc.DocumentNode.SelectNodes("//a[contains(@href,'/zip-code/michigan/')]");
-            var zipCode = string.Empty;
-            var zipCodeList = new List<ZipCodeModel>();
             foreach (HtmlNode node in nodes)
             {
-                zipCode = node.InnerText;
+                var zipCodeEntry = new ZipCodeModel();
+                var zipCode = node.InnerText;
                 zipCode = zipCode.Remove(zipCode.IndexOf("(")).Trim();
-                zipCodeList.Add(new ZipCodeModel { ZipCode = zipCode });
+                zipCodeEntry.ZipCode = zipCode;
+                countyZip.ZipCodeList.Add(zipCodeEntry);
             }
-            string json = JsonConvert.SerializeObject(zipCodeList.ToArray());
+            countyZip.UseCounty = true;
+            var fileName = ConfigurationManager.AppSettings.Get("CountyZipFile").ToString();
+            var json = File.ReadAllText(fileName);
 
-            var fileName = filePath + "WayneCounty.json";
-            System.IO.File.WriteAllText(fileName, json);
+            var oldList = JsonConvert.DeserializeObject<List<CountyZipModel>>(json);
+            if(oldList==null)
+            {
+                oldList = new List<CountyZipModel>();
+                oldList.Add(countyZip);
+            }
+            var firstItem = oldList.FirstOrDefault(x => x.CountyCode == countyZip.CountyCode);
+            if (firstItem == null)
+            {
+                oldList.Add(countyZip);
+            }
+            string nweJson = JsonConvert.SerializeObject(oldList);
+            System.IO.File.WriteAllText(fileName, nweJson);
+
         }
     }
 
-    public class ZipCodeModel
-    {
-        public string ZipCode { get; set; }
-    }
+
 }
