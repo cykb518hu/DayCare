@@ -129,7 +129,8 @@ namespace SheetsQuickstart
                         }
                         catch (Exception ex)
                         {
-                            if (ex.Message.IndexOf("The operation has timed out") >= 0)
+                            LogHelper.log.Info(r + "-detail:" + d.Value + "exception:" + ex.ToString());
+                            if (ex.Message.IndexOf("The operation has timed out") >= 0 || ex.Message.IndexOf("无法连接到远程服务器") >= 0)
                             {
                                 #region if time out check again
                                 try
@@ -145,14 +146,15 @@ namespace SheetsQuickstart
                                 }
                                 #endregion
                             }
-                            LogHelper.log.Info(r + "-detail:" + d.Value + "exception:" + ex.ToString());
+                           
                         }
                     }
                     Console.WriteLine(r + "-This ZipCode End...");
                 }
                 catch (Exception ex)
                 {
-                    if (ex.Message.IndexOf("The operation has timed out") >= 0)
+                    LogHelper.log.Info("ZipCode:" + r + "exception:" + ex.ToString());
+                    if (ex.Message.IndexOf("The operation has timed out") >= 0|| ex.Message.IndexOf("无法连接到远程服务器") >= 0)
                     {
                         #region if time out check again
                         try
@@ -171,6 +173,7 @@ namespace SheetsQuickstart
                                 }
                                 catch (Exception subex)
                                 {
+                                    LogHelper.log.Info(r + "-detail:" + d.Value + "exception:" + subex.ToString());
                                     if (ex.Message.IndexOf("The operation has timed out") >= 0)
                                     {
                                         #region if time out check again
@@ -187,7 +190,7 @@ namespace SheetsQuickstart
                                         }
                                         #endregion
                                     }
-                                    LogHelper.log.Info(r + "-detail:" + d.Value + "exception:" + subex.ToString());
+                                    
                                 }
                             }
                            
@@ -199,7 +202,7 @@ namespace SheetsQuickstart
                         }
                         #endregion
                     }
-                    LogHelper.log.Info("ZipCode:" + r + "exception:" + ex.ToString());
+                    
                 }
             }
             return resultList;

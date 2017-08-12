@@ -97,6 +97,7 @@
     <None Include="App.config">
       <SubType>Designer</SubType>
     </None>
+    <None Include="PrevList - Copy.json" />
     <None Include="PrevList.json" />
     <None Include="client_secret.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
