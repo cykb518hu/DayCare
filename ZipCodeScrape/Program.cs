@@ -17,6 +17,12 @@ namespace ZipCodeScrape
     {
         static void Main(string[] args)
         {
+            var str = "480353652";
+            if (str.Length > 5)
+            {
+                str = str.Substring(0, 5);
+            }
+            return;
             var countyZip = new CountyZipModel();
             var countyCode = ConfigurationManager.AppSettings.Get("countyCode").ToString();
 

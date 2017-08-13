@@ -26,7 +26,11 @@ namespace SheetsQuickstart
 
         static void Main(string[] args)
         {
-          
+
+            DayCareScrape me = new DayCareScrape("");
+            me.ExtractDayCareDetailList("http://59.110.217.147:8005/nodata.htm");
+            return;
+
             List<DayCareModel> list = new List<DayCareModel>();
             try
             {
@@ -187,18 +191,35 @@ namespace SheetsQuickstart
                     Console.WriteLine(BuildLogMessage(r));
                     var result = me.ExtractDayCareDetailList("http://www.dleg.state.mi.us/brs_cdc/" + r.DetailUrl);
                     result.FacilityInformation.County = r.County;
+                    if (string.IsNullOrEmpty(result.FacilityInformation.Name))
+                    {
+                        LogHelper.log.Info(BuildLogMessage(r) + " no data scraped");
+
+                        LogHelper.log.Info(BuildLogMessage(r) + " scrape again");
+                        try
+                        {
+                            result = me.ExtractDayCareDetailList("http://www.dleg.state.mi.us/brs_cdc/" + r.DetailUrl);
+                            result.FacilityInformation.County = r.County;
+                            resultList.Add(result);
+                        }
+                        catch (Exception subex)
+                        {
+                            LogHelper.log.Info(BuildLogMessage(r) + "exception:" + subex.ToString());
+                        }
+
+                    }
                     resultList.Add(result);
                 }
                 catch (Exception ex)
                 {
-                    LogHelper.log.Info(BuildLogMessage(r)+ "exception:" + ex.ToString());
-                    if (ex.Message.IndexOf("The operation has timed out") >= 0 || ex.Message.IndexOf("无法连接到远程服务器") >= 0)
+                    LogHelper.log.Info(BuildLogMessage(r) + "exception:" + ex.ToString());
+                    if (ex.Message.IndexOf("The operation has timed out") >= 0 || ex.Message.IndexOf("无法连接到远程服务器") >= 0 || ex.Message.IndexOf("基础连接已经关闭") >= 0)
                     {
+                        LogHelper.log.Info(BuildLogMessage(r) + " scrape again:");
                         try
                         {
-                            Console.WriteLine(BuildLogMessage(r));
                             var result = me.ExtractDayCareDetailList("http://www.dleg.state.mi.us/brs_cdc/" + r.DetailUrl);
-                            result.FacilityInformation.ZipCode = r.ToString();
+                            result.FacilityInformation.County = r.County;
                             resultList.Add(result);
                         }
                         catch (Exception subex)
@@ -218,7 +239,7 @@ namespace SheetsQuickstart
         {
             var county = string.IsNullOrEmpty(model.County) ? "" : model.County;
             var zipCode = string.IsNullOrEmpty(model.ZipCode) ? "" : model.ZipCode;
-            return string.Format("County:{0}-ZipCode{1}-Detail{2}", county, zipCode, model.DetailUrl);
+            return string.Format("County:{0}-ZipCode{1}-Detail{2} ", county, zipCode, model.DetailUrl);
 
         }
 
@@ -236,7 +257,7 @@ namespace SheetsQuickstart
                 {
                     foreach (var r in list)
                     {
-                        if (prevList.Any(x => x.LicenseInformation.Number.Equals(r.LicenseInformation.Number)))
+                        if (r.LicenseeInformation != null && prevList.Any(x => x.LicenseInformation != null && x.LicenseInformation.Number.Equals(r.LicenseInformation.Number)))
                         {
                             continue;
                         }
@@ -244,7 +265,7 @@ namespace SheetsQuickstart
                     }
                     foreach (var r in prevList)
                     {
-                        if (list.Any(x => x.LicenseInformation.Number.Equals(r.LicenseInformation.Number)))
+                        if (r.LicenseeInformation != null && prevList.Any(x => x.LicenseInformation != null && x.LicenseInformation.Number.Equals(r.LicenseInformation.Number)))
                         {
                             continue;
                         }
@@ -256,6 +277,7 @@ namespace SheetsQuickstart
             }
             catch(Exception ex)
             {
+                list = list.OrderByDescending(x => x.FacilityInformation.Status).ThenBy(x => x.FacilityInformation.ZipOrder).ToList();
                 LogHelper.log.Info("compare data exception:" + ex.ToString());
             }
             return list;

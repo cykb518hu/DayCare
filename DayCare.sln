@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZipCodeScrape", "ZipCodeScr
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DayCareModel", "DayCareModel\DayCareModel.csproj", "{8BA4647C-E183-4F19-9CC8-E2C729457DA5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InteractiveMap", "InteractiveMap\InteractiveMap.csproj", "{C5CE8A1D-E767-495D-826B-66A25DE68C5F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{8BA4647C-E183-4F19-9CC8-E2C729457DA5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8BA4647C-E183-4F19-9CC8-E2C729457DA5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8BA4647C-E183-4F19-9CC8-E2C729457DA5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C5CE8A1D-E767-495D-826B-66A25DE68C5F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C5CE8A1D-E767-495D-826B-66A25DE68C5F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C5CE8A1D-E767-495D-826B-66A25DE68C5F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C5CE8A1D-E767-495D-826B-66A25DE68C5F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

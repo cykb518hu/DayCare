@@ -71,8 +71,6 @@ namespace DayCare
 
             foreach (HtmlNode table in dayCareCenterNodes)
             {
-
-            
                 var rows = table.SelectNodes("tr");
                 var title = rows[0].InnerHtml.Replace("\r", "").Replace(" ", "").Replace("\n", "");
                 if (title.IndexOf("FacilityInformation") > 0)
@@ -90,6 +88,10 @@ namespace DayCare
 
                     facilityInformation.State = stateAndZip.Split(',')[0].Trim();
                     facilityInformation.ZipCode = stateAndZip.Split(',')[1].Trim();
+                    //if(facilityInformation.ZipCode.Length>5)
+                    //{
+                    //    facilityInformation.ZipCode = facilityInformation.ZipCode.Substring(0, 5);
+                    //}
                     facilityInformation.ZipOrder = Convert.ToInt32(facilityInformation.ZipCode);
 
                     facilityInformation.County = rows[3].SelectNodes("td")[1].SelectSingleNode("font").InnerText;
