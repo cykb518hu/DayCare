@@ -148,6 +148,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="carto.html" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\font-awesome.css" />
@@ -167,6 +168,7 @@
     </Content>
     <Content Include="map-ballots.json" />
     <Content Include="ma-towns.topojson.json" />
+    <None Include="Properties\PublishProfiles\tests.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\d3.js" />
     <Content Include="Scripts\jquery.dataTables.min.js" />
