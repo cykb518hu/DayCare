@@ -149,6 +149,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="carto.html" />
+    <Content Include="center.html" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\font-awesome.css" />
@@ -159,6 +160,7 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="info.html" />
     <Content Include="Map.html" />
     <Content Include="Scripts\ballot.js" />
     <Content Include="Scripts\bootstrap.js" />
@@ -186,6 +188,9 @@
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\topojson.js" />
     <Content Include="Scripts\underscore-min.js" />
+    <Content Include="simple.html" />
+    <Content Include="start.html" />
+    <Content Include="test.html" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
