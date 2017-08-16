@@ -51,12 +51,28 @@
     <div id="layer_selector" class="cartodb-infobox">
         <ul>
             <li data="all" class="selected">All countries</li>
-            <li data="Cork">Cork<sup>2</sup></li>
-            <li data="Galway">Galway<sup>2</sup></li>
-            <li data="Donegal">Donegal<sup>2</sup></li>
-            <li data="Mayo">Mayo<sup>2</sup></li>
+            <li data="Clare">Clare</li>
+            <li data="Wayne">Wayne</li>
+            <li data="Kent">Kent</li>
+            <li data="Genesee">Genesee</li>
+            <li data="five">five </li>
         </ul>
     </div>
+
+    <script type="infowindow/html" id="infowindow_template">
+        <span> custom </span>
+        <div class="cartodb-popup">
+            <a href="#close" class="cartodb-popup-close-button close">x</a>
+            <div class="cartodb-popup-content-wrapper">
+                <div class="cartodb-popup-content">
+                    <img style="width: 100%" src="http://rambo.webcindario.com/images/18447755.jpg">
+                    <!-- content.data contains the field info -->
+                    <h4>test</h4>
+                </div>
+            </div>
+            <div class="cartodb-popup-tip-container"></div>
+        </div>
+    </script>
 
     <!-- include cartodb.js library -->
     <script src="http://libs.cartocdn.com/cartodb.js/v3/3.15/cartodb.js"></script>
@@ -74,25 +90,41 @@
           $options.removeClass('selected');
           $li.addClass('selected');
           // create query based on data from the layer
-          var query = "select * from ireland_geojson";
-          if(area !== 'all') {
-              query = "select * from ireland_geojson where name = '" + area + "'";
+          var query = "SELECT * FROM cartodb_query";
+          if (area !== 'all') {
+              if (area == 'five') {
+                  query = "SELECT * FROM cartodb_query where name in ('Clare','Wayne','Kent','Genesee')";
+              }
+              else {
+                  query = "SELECT * FROM cartodb_query where name = '" + area + "'";
+              }
           }
           // change the query in the layer to update the map
           layer.setSQL(query);
         });
       }
       function main() {
-          cartodb.createVis('map', 'http://achilles.cartodb.com/u/achilles/api/v2/viz/600c7b15-396f-4af2-b4eb-5214ed7a7768/viz.json', {
+          cartodb.createVis('map', 'http://achilles.cartodb.com/u/achilles/api/v2/viz/4b83115e-8283-11e7-bb9f-0ef7f98ade21/viz.json', {
           tiles_loader: true,
-          center_lat: 55,
-          center_lon:-5,
-          zoom: 6
+          center_lat: 44,
+          center_lon:-85,
+          zoom: 7,
+          search: false,
+          infowindow: true
         })
         .done(function(vis, layers) {
           // layer 0 is the base layer, layer 1 is cartodb layer
-          var subLayer = layers[1].getSubLayer(0);
-          createSelector(subLayer);
+            var subLayer = layers[1].getSubLayer(0);
+          //  sublayer.infowindow.set('template', $('#infowindow_template').html());
+            //layers.on('featureClick', function () {
+            //    console.log("mouse over polygon with data: " + data);
+            //});
+          
+            createSelector(subLayer);
+            vis.Vis.addInfowindow(map, subLayer, ['name'], {
+                infowindowTemplate: $('#infowindow_template').text(),
+                triggerEvent: 'featureClick'
+            });
         })
         .error(function(err) {
           console.log(err);
