@@ -59,50 +59,58 @@
         </ul>
     </div>
 
-    <script type="infowindow/html" id="infowindow_template">
-        <span> custom </span>
-        <div class="cartodb-popup">
-            <a href="#close" class="cartodb-popup-close-button close">x</a>
+
+        <div id="pop-window" class="cartodb-popup header orange v2" style="display:none">
+            <a id="pop-window-close" href="#close" class="cartodb-popup-close-button close">x</a>
+            <div class="cartodb-popup-header">
+                <h1>1111</h1>
+                <span class="separator"></span>
+            </div>
             <div class="cartodb-popup-content-wrapper">
                 <div class="cartodb-popup-content">
-                    <img style="width: 100%" src="http://rambo.webcindario.com/images/18447755.jpg">
-                    <!-- content.data contains the field info -->
-                    <h4>test</h4>
+                    <h4>uri</h4>
+                    <p>111111</p>
+                    <h4>url</h4>
+                    <p>222222</p>
                 </div>
+
+                <p style="text-align:right;font-size:small;">Custom infowindow</p>
             </div>
-            <div class="cartodb-popup-tip-container"></div>
+            <div class="cartodb-popup-tip-container">
+            </div>
         </div>
-    </script>
 
     <!-- include cartodb.js library -->
     <script src="http://libs.cartocdn.com/cartodb.js/v3/3.15/cartodb.js"></script>
 
     <script>
       // create layer selector
-      function createSelector(layer) {
-        var sql = new cartodb.SQL({ user: 'documentation' });
-        var $options = $('#layer_selector li');
-        $options.click(function(e) {
-          // get the area of the selected layer
-          var $li = $(e.target);
-          var area = $li.attr('data');
-          // deselect all and select the clicked one
-          $options.removeClass('selected');
-          $li.addClass('selected');
-          // create query based on data from the layer
-          var query = "SELECT * FROM cartodb_query";
-          if (area !== 'all') {
-              if (area == 'five') {
-                  query = "SELECT * FROM cartodb_query where name in ('Clare','Wayne','Kent','Genesee')";
-              }
-              else {
-                  query = "SELECT * FROM cartodb_query where name = '" + area + "'";
-              }
-          }
-          // change the query in the layer to update the map
-          layer.setSQL(query);
-        });
-      }
+        function createSelector(layer) {
+            var sql = new cartodb.SQL({ user: 'documentation' });
+            var $options = $('#layer_selector li');
+            $options.click(function (e) {
+                // get the area of the selected layer
+                var $li = $(e.target);
+                var area = $li.attr('data');
+                // deselect all and select the clicked one
+                $options.removeClass('selected');
+                $li.addClass('selected');
+                // create query based on data from the layer
+                var query = "SELECT * FROM cartodb_query";
+                if (area !== 'all') {
+                    if (area == 'five') {
+                        query = "SELECT * FROM cartodb_query where name in ('Clare','Wayne','Kent','Genesee')";
+                    }
+                    else {
+                        query = "SELECT * FROM cartodb_query where name = '" + area + "'";
+                    }
+                }
+                // change the query in the layer to update the map
+                layer.setSQL(query);
+            });
+            var fquery = "SELECT * FROM cartodb_query where name in ('Clare','Wayne','Kent','Genesee')";
+            layer.setSQL(fquery);
+        }
       function main() {
           cartodb.createVis('map', 'http://achilles.cartodb.com/u/achilles/api/v2/viz/4b83115e-8283-11e7-bb9f-0ef7f98ade21/viz.json', {
           tiles_loader: true,
@@ -112,7 +120,8 @@
           search: false,
           infowindow: true
         })
-        .done(function(vis, layers) {
+        .done(function (vis, layers) {
+            alert("1");
           // layer 0 is the base layer, layer 1 is cartodb layer
             var subLayer = layers[1].getSubLayer(0);
           //  sublayer.infowindow.set('template', $('#infowindow_template').html());
@@ -121,9 +130,11 @@
             //});
           
             createSelector(subLayer);
-            vis.Vis.addInfowindow(map, subLayer, ['name'], {
-                infowindowTemplate: $('#infowindow_template').text(),
-                triggerEvent: 'featureClick'
+            subLayer.set({ 'interactivity': ['cartodb_id', 'name'] });
+            subLayer.setInteraction(true);
+            subLayer.on('featureClick', function (e, latlng, pos, data, layerNumber) {
+                $("#pop-window").css({ 'display': 'block', 'left': pos.x - 75, 'bottom': ($(window).height() - pos.y + 20), 'cursor': 'pointer' });
+                $("#pop-window").find('p').text(data.name);
             });
         })
         .error(function(err) {
@@ -131,6 +142,46 @@
         });
       }
       window.onload = main;
+
+    </script>
+    <script src="Scripts/jquery-1.10.2.js"></script>
+    <script  type="text/javascript">
+        $(document).ready(function () {
+            var personList = [
+  {
+      County: "Kent",
+      Important: true,
+      ModifyDate: "2017-08-01",
+      Reviewd: true,
+      Amount:10
+  },
+  {
+      County: "Wayne",
+      Important: true,
+      ModifyDate: "2017-08-08",
+      Reviewd: true,
+      Amount: 20
+  },
+  {
+      County: "Genesee",
+      Important: true,
+      ModifyDate: "2017-08-10",
+      Reviewd: true,
+      Amount: 30
+  },
+  {
+      County: "Clare",
+      Important: true,
+      ModifyDate: "2017-08-20",
+      Reviewd: true,
+      Amount: 60
+  }
+            ]
+            personList
+            $("#pop-window-close").click(function () {
+                $("#pop-window").hide();
+            });
+        });
     </script>
 </body>
 </html>

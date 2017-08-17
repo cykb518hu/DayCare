@@ -1,127 +1,103 @@
 ﻿<!DOCTYPE html>
-
-<html>
-
+<html lang="en">
 <head>
-
-    <title>Custom infowindow example | CartoDB.js</title>
-
-    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
-
-    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
-
+    <meta charset="UTF-8">
+    <title>How to reset the view in a CARTO dashboard</title>
     <link rel="shortcut icon" href="http://cartodb.com/assets/favicon.ico" />
-
-    <style>
-        html, body, #map {
+    <meta name=viewport content="width=device-width initial-scale=1">
+    <link rel="stylesheet" href="http://libs.cartocdn.com/di.js/v0/themes/css/deep-insights.css" />
+    <script src=" http//libs.cartocdn.com/di.js/v0/deep-insights.uncompressed.js"></script>
+    <style type="text/css">
+        html, body {
+            position: relative;
             height: 100%;
             padding: 0;
             margin: 0;
         }
     </style>
-
-
-
-    <link rel="stylesheet" href="http://libs.cartodb.com/cartodb.js/v3/3.15/themes/css/cartodb.css" />
-
 </head>
-
 <body>
 
-    <div id="map"></div>
+    <div style="top: 40px;bottom: auto;position: absolute;z-index: 100;left: 105px;">
+        <button class="CDB-Button CDB-Button--primary CDB-Button--big" id="view">
+            <span class="CDB-Button-Text CDB-Text is-semibold CDB-Size-medium">Reset View</span>
+        </button>
+    </div>
 
+    <div id="dashboard"></div>
 
-
-    <script type="infowindow/html" id="infowindow_template">
-
-        <span> custom </span>
-
-        <div class="cartodb-popup">
-
-            <a href="#close" class="cartodb-popup-close-button close">x</a>
-
-
-
-            <div class="cartodb-popup-content-wrapper">
-
-                <div class="cartodb-popup-content">
-
-                    <img style="width: 100%" src="http://rambo.webcindario.com/images/18447755.jpg">
-
-                    <!-- content.data contains the field info -->
-
-                    <h4>{{content.data.name}}</h4>
-
-                </div>
-
-            </div>
-
-            <div class="cartodb-popup-tip-container"></div>
-
-        </div>
-
+    <script type="text/SQL" id="query">
+        SELECT *
+        FROM populated_places
+        WHERE pop_max > 0
     </script>
-
-
-
-    <script src="http://libs.cartodb.com/cartodb.js/v3/3.15/cartodb.js"></script>
-
-
 
     <script>
+       window.onload = function() {
 
-        function main() {
-
-            var map = L.map('map', {
-
-                zoomControl: false,
-
-                center: [0, 0],
-
-                zoom: 3
-
+        // set vizJson
+        var vizJSON = "https://team.cartodb.com/u/ramirocartodb/api/v3/viz/1740ac74-384e-11e6-91fe-0e31c9be1b51/viz.json";
+        // set SQL query
+        var query = cdb.$("#query").text();
+        // create dashboard
+        cartodb.deepInsights.createDashboard('#dashboard', vizJSON, {
+          no_cdn: false,
+          cartodb_logo: false,
+          zoom: 5, //set zoom
+          center: [40, 5] // set center
+        },function(err,dashboard){
+            // get map object
+            var map = dashboard.getMap();
+            // get & set layer object
+            var layer = map.getLayer(1);
+            layer.set('sql', query);
+            // set widget parameters
+            var sum = {
+                "type": "formula",
+                "title": "Total Population",
+                "column": "pop_max",
+                "operation": "sum"
+            };
+            var avg = {
+                "type": "formula",
+                "title": "Average Population",
+                "column": "pop_max",
+                "operation": "avg"
+            };
+            var histo = {
+                "type": "histogram",
+                "title": "Population Histogram",
+                "column": "pop_max",
+                "bins": 20
+            };
+            var city = {
+                "type": "category",
+                "title": "City Category",
+                "column": "name"
+            };
+            var country = {
+                "type": "category",
+                "title": "Country Category",
+                "column": "adm0name"
+            };
+            var city = {
+                "type": "category",
+                "title": "City Category",
+                "column": "name"
+            };
+            // add widgets to the dashboard
+            var sumWidget = dashboard.createFormulaWidget(sum, layer);
+            var avgWidget = dashboard.createFormulaWidget(avg, layer);
+            var histoWidget = dashboard.createHistogramWidget(histo, layer);
+            var countryWidget = dashboard.createCategoryWidget(country, layer);
+            var cityWidget = dashboard.createCategoryWidget(city, layer);
+            // assign set view functions
+            cdb.$('#view').click(function() {
+                vis.centerMapToOrigin();
+                vis.map.setZoom(5);
             });
-
-
-
-            // add a nice baselayer from Stamen
-
-            L.tileLayer('http://{s}.tile.stamen.com/toner/{z}/{x}/{y}.png', {
-
-                attribution: 'Stamen'
-
-            }).addTo(map);
-
-
-
-            cartodb.createLayer(map, 'http://documentation.cartodb.com/api/v2/viz/2b13c956-e7c1-11e2-806b-5404a6a683d5/viz.json')
-
-                .addTo(map)
-
-                .on('done', function (layer) {
-
-                    // get sublayer 0 and set the infowindow template
-
-                    var sublayer = layer.getSubLayer(0);
-
-
-
-                    sublayer.infowindow.set('template', $('#infowindow_template').html());
-
-                }).on('error', function () {
-
-                    console.log("some error occurred");
-
-                });
-
-        }
-
-
-
-        window.onload = main;
-
+        });
+      }
     </script>
-
 </body>
-
 </html>

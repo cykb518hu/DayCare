@@ -171,6 +171,7 @@
     </Content>
     <Content Include="map-ballots.json" />
     <Content Include="ma-towns.topojson.json" />
+    <Content Include="County.json" />
     <None Include="Properties\PublishProfiles\tests.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\d3.js" />
