@@ -109,7 +109,20 @@
                 layer.setSQL(query);
             });
             var fquery = "SELECT * FROM cartodb_query where name in ('Clare','Wayne','Kent','Genesee')";
-            layer.setSQL(fquery);
+            //layer.setSQL(fquery);
+
+            sql.getBounds(query).done(function (bounds) {
+                var southWest = L.latLng(bounds[0]),
+    northEast = L.latLng(bounds[1]),
+    bb = L.latLngBounds(southWest, northEast);
+
+
+                layer.getNativeMap().fitBounds(bb);
+            });
+            var cartocss = "#cartodb_query{polygon-fill: #fc9f58; line-color: white; } #cartodb_query[name='Wayne']{polygon-fill: #c8fc55; line-color: white; }";
+            //var cartocss1 = "#cartodb_query[name='Wayne']{polygon-fill: #c8fc55; line-color: white; }";
+            //layer.setCartoCSS(cartocss);
+            layer.setCartoCSS(cartocss);
         }
       function main() {
           cartodb.createVis('map', 'http://achilles.cartodb.com/u/achilles/api/v2/viz/4b83115e-8283-11e7-bb9f-0ef7f98ade21/viz.json', {
@@ -121,14 +134,7 @@
           infowindow: true
         })
         .done(function (vis, layers) {
-            alert("1");
-          // layer 0 is the base layer, layer 1 is cartodb layer
             var subLayer = layers[1].getSubLayer(0);
-          //  sublayer.infowindow.set('template', $('#infowindow_template').html());
-            //layers.on('featureClick', function () {
-            //    console.log("mouse over polygon with data: " + data);
-            //});
-          
             createSelector(subLayer);
             subLayer.set({ 'interactivity': ['cartodb_id', 'name'] });
             subLayer.setInteraction(true);

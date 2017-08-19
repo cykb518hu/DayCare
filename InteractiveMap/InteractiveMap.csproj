@@ -150,6 +150,7 @@
   <ItemGroup>
     <Content Include="carto.html" />
     <Content Include="center.html" />
+    <Content Include="Content\bootstrap-multiselect.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\font-awesome.css" />
@@ -158,12 +159,17 @@
     <Content Include="Content\screen.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="FSearch.htm" />
+    <Content Include="FSearch_files\chosen-sprite.png" />
+    <Content Include="FSearch_files\font.css" />
+    <Content Include="FSearch_files\theme-main.js" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
     <Content Include="info.html" />
     <Content Include="Map.html" />
     <Content Include="PopUp.html" />
     <Content Include="Scripts\ballot.js" />
+    <Content Include="Scripts\bootstrap-multiselect.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="ApplicationInsights.config">
@@ -172,6 +178,7 @@
     <Content Include="map-ballots.json" />
     <Content Include="ma-towns.topojson.json" />
     <Content Include="County.json" />
+    <Content Include="fonts\realty\realty.woff" />
     <None Include="Properties\PublishProfiles\tests.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\d3.js" />
