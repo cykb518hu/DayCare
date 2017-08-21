@@ -26,11 +26,6 @@ namespace SheetsQuickstart
 
         static void Main(string[] args)
         {
-
-            DayCareScrape me = new DayCareScrape("");
-            me.ExtractDayCareDetailList("http://59.110.217.147:8005/nodata.htm");
-            return;
-
             List<DayCareModel> list = new List<DayCareModel>();
             try
             {
