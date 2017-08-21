@@ -26,5 +26,17 @@ namespace InteractiveMap.Controllers
 
             return View();
         }
+        public ActionResult Map()
+        {
+            ViewBag.Message = "Your contact page.";
+
+            return View();
+        }
+        public ActionResult CityMap()
+        {
+            ViewBag.Message = "Your contact page.";
+
+            return View();
+        }
     }
 }

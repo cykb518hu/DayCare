@@ -1,29 +1,22 @@
-﻿<!DOCTYPE html>
-<html lang="en-US">
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Achilles Map</title>
-
-
-    <link id='theme-main-min-css' href="FSearch_files/theme-main.css" rel="stylesheet" media='all' />
-    <link id='theme-css' href="FSearch_files/style.css" rel="stylesheet" media='all' />
-    <link href="FSearch_files/font.css" rel="stylesheet" />
-
-    <link href="Content/bootstrap.css" rel="stylesheet" />
-    <link href="Content/bootstrap-multiselect.css" rel="stylesheet" />
-
-    <script src="FSearch_files/jquery.js"></script>
-
-
-
-
-
-    <script src="Scripts/bootstrap.js"></script>
-    <script src="Scripts/bootstrap-multiselect.js"></script>
-
-
+    <meta name="viewport" content="width=device-width" />
+    <title>CityMap</title>
+    <link href="~/Content/theme-main.css" rel="stylesheet" />
+    <link href="~/Content/style.css" rel="stylesheet" />
+    <link href="~/Content/font.css" rel="stylesheet" />
+    <link href="~/Content/bootstrap.css" rel="stylesheet" />
+    <link href="~/Content/bootstrap-multiselect.css" rel="stylesheet" />
+    <script src="~/Scripts/jquery-1.10.2.js"></script>
+    <script src="~/Scripts/bootstrap.js"></script>
+    <script src="~/Scripts/bootstrap-multiselect.js"></script>
 </head>
 <body class="page-template page-template-template-map-vertical page-template-template-map-vertical-php page page-id-301 header-fixed wpb-js-composer js-comp-ver-5.1.1 vc_responsive">
 
@@ -44,20 +37,20 @@
             <div class="row">
                 <div class="col-sm-6 search-container">
 
-                    <form class="property-search-form border-box" >
+                    <form class="property-search-form border-box">
                         <div class="row">
                             <div class="col-xs-12 col-sm-6 form-group">
-                                <select name="sel_search_CityName" id="sel_search_CityName" class="form-control" multiple="multiple" >
+                                <select name="sel_search_CityName" id="sel_search_CityName" class="form-control" multiple="multiple">
                                     <option value="all" selected>Any City</option>
 
-                             				     
-                                            <option value="belgravia" class="level2">
-                                                Belgravia
-                                            </option>
+
+                                    <option value="belgravia" class="level2">
+                                        Belgravia
+                                    </option>
 
                                 </select>
                             </div>
-                            <div class="col-xs-12 col-sm-6 form-group select">
+                            <div class="col-xs-12 col-sm-6 form-group">
                                 <select name="sel_search_KeyWord" id="sel_search_KeyWord" class="form-control" multiple="multiple">
                                     <option value="all">Any Key Word</option>
                                     <option value="rent">
@@ -68,8 +61,8 @@
                                     </option>
                                 </select>
                             </div>
-                            <div class="col-xs-12 col-sm-6 form-group select">
-                                <select name="sel_search_DeployDate" id="sel_search_DeployeDate" class="form-control" multiple="multiple">
+                            <div class="col-xs-12 col-sm-6 form-group">
+                                <select name="sel_search_DeployDate" id="sel_search_DeployDate" class="form-control" multiple="multiple">
                                     <option value="all">Deploy Date</option>
                                     <option value="apartment">
                                         Apartment
@@ -949,4 +942,5 @@
 
 
 </body>
+
 </html>
