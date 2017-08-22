@@ -2,10 +2,12 @@
 using DayCareDataModel;
 using HtmlAgilityPack;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -17,6 +19,8 @@ namespace ZipCodeScrape
     {
         static void Main(string[] args)
         {
+            Municiplity();
+            return;
             var str = "480353652";
             if (str.Length > 5)
             {
@@ -60,6 +64,83 @@ namespace ZipCodeScrape
             System.IO.File.WriteAllText(fileName, nweJson);
 
         }
+
+        static void Municiplity()
+        {
+            List<MuniciplityCounty> list = new List<MuniciplityCounty>();
+
+            Dictionary<string, string> cityScrapeList = new Dictionary<string, string>();
+            var cityScrapeFileName = @"C:\TestCode\Project\SingleApplication\App_Data\city.json";
+            var json = File.ReadAllText(cityScrapeFileName);
+            var jobj = JArray.Parse(json);
+
+            foreach (var r in jobj)
+            {
+                if (!cityScrapeList.ContainsKey(r["City"].ToString()))
+                {
+                    cityScrapeList.Add(r["City"].ToString(), r["Date"].ToString());
+                }
+            }
+
+            Dictionary<string, string> wikeList = new Dictionary<string, string>();
+            var url = string.Format("https://en.wikipedia.org/wiki/List_of_municipalities_in_Michigan_(by_population)");
+            var web = new HtmlWeb();
+            HtmlDocument doc = web.Load(url);
+            HtmlNodeCollection dayCareCenterNodes = doc.DocumentNode.SelectNodes("//table[@class='wikitable sortable']");
+            foreach (HtmlNode table in dayCareCenterNodes)
+            {
+                var rows = table.SelectNodes("tr");
+                foreach (var r in rows)
+                {
+                    if (r.SelectNodes("td") != null)
+                    {
+                        var municiplity = r.SelectNodes("td")[1].FirstChild.InnerText;
+                        var county = r.SelectNodes("td")[2].FirstChild.InnerText;
+                        wikeList.Add(municiplity, county);
+                    }
+                }
+            }
+            foreach (var r in cityScrapeList)
+            {
+                var data = new MuniciplityCounty();
+                data.Municiplity = r.Key;
+                data.DeployDate = r.Value;
+                foreach (var w in wikeList)
+                {
+
+                    var orignmuni = r.Key.Replace("TownshipMI", "").Replace("Charter", "").Replace("MICity", "").ToLower() ;
+                    var wmuni = w.Key.Replace(" ", string.Empty).ToLower();
+                    if (wmuni.Contains(orignmuni))
+                    {
+                        data.ShortNm = w.Key;
+                        data.County = w.Value;
+                    }
+
+
+                }
+                list.Add(data);
+            }
+            string connectionString = ConfigurationManager.ConnectionStrings["LocalDB"].ToString();
+            foreach (var rr in list)
+            {
+                string queryString = @"INSERT INTO CITY (DEPLOYE_DATE,SHORT_NM,COUNTY_NM,CITY_NM) VALUES('" + rr.DeployDate + "','" + rr.ShortNm + "','" + rr.County + "','" + rr.Municiplity + "')";
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    SqlCommand command = new SqlCommand(queryString, connection);
+                    connection.Open();
+                    command.ExecuteNonQuery();
+                }
+
+            }
+        }
+    }
+
+    public class MuniciplityCounty
+    {
+        public string Municiplity { get; set; }
+        public string ShortNm { get; set; }
+        public string County { get; set; }
+        public string DeployDate { get; set; }
     }
 
 
