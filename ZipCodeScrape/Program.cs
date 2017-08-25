@@ -107,14 +107,44 @@ namespace ZipCodeScrape
                 data.DeployDate = r.Value;
                 foreach (var w in wikeList)
                 {
-
-                    var orignmuni = r.Key.Replace("TownshipMI", "").Replace("Charter", "").Replace("MICity", "").ToLower() ;
-                    var wmuni = w.Key.Replace(" ", string.Empty).ToLower();
-                    if (wmuni.Contains(orignmuni))
+                    if (r.Key.IndexOf("MICity") > 0)
                     {
-                        data.ShortNm = w.Key;
-                        data.County = w.Value;
+                        var orignmuni = r.Key.Replace("MICity", "").ToLower();
+                        var wmuni = w.Key.Replace(" ", string.Empty).ToLower();
+                        if(wmuni.IndexOf("(")>0)
+                        {
+                            continue;
+                           // wmuni = wmuni.Substring(0, wmuni.IndexOf("("));
+                        }
+                        if (wmuni.Contains(orignmuni))
+                        {
+                            data.Typ = "City";
+                            data.ShortNm = w.Key;
+                            data.County = w.Value;
+                            data.LongNm = "City of " + w.Key;
+                            continue;
+                        }
+
                     }
+
+
+                    if (r.Key.IndexOf("TownshipMI") > 0)
+                    {
+                        var orignmuni = r.Key.Replace("TownshipMI", "").Replace("Charter", "").ToLower();
+                        var wmuni = w.Key.Replace(" ", string.Empty).ToLower();
+                        if (wmuni.IndexOf("(") > 0)
+                        {
+                            if (wmuni.Contains(orignmuni))
+                            {
+                                data.Typ = "Township";
+                                data.ShortNm = w.Key.Substring(0, w.Key.IndexOf("(")).Trim();
+                                data.County = w.Value;
+                                data.LongNm = data.ShortNm + " Township";
+                                continue;
+                            }
+                        }
+                    }
+
 
 
                 }
@@ -123,7 +153,7 @@ namespace ZipCodeScrape
             string connectionString = ConfigurationManager.ConnectionStrings["LocalDB"].ToString();
             foreach (var rr in list)
             {
-                string queryString = @"INSERT INTO CITY (DEPLOYE_DATE,SHORT_NM,COUNTY_NM,CITY_NM) VALUES('" + rr.DeployDate + "','" + rr.ShortNm + "','" + rr.County + "','" + rr.Municiplity + "')";
+                string queryString = @"INSERT INTO CITY (DEPLOYE_DATE,SHORT_NM,COUNTY_NM,CITY_NM,typ,long_nm) VALUES('" + rr.DeployDate + "','" + rr.ShortNm + "','" + rr.County + "','" + rr.Municiplity + "','" + rr.Typ + "','" + rr.LongNm + "')";
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
                     SqlCommand command = new SqlCommand(queryString, connection);
@@ -141,6 +171,9 @@ namespace ZipCodeScrape
         public string ShortNm { get; set; }
         public string County { get; set; }
         public string DeployDate { get; set; }
+
+        public string Typ { get; set; }
+        public string LongNm { get; set; }
     }
 
 
