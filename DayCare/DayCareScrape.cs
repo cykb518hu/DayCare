@@ -67,7 +67,7 @@ namespace DayCare
             model.LicenseInformation = new LicenseInfo();
             model.ServicesOffered = new ServicesOffered();
             HtmlDocument doc = web.Load(url);
-            HtmlNodeCollection dayCareCenterNodes = doc.DocumentNode.SelectNodes("//table[@cellspacing='5']");
+            HtmlNodeCollection dayCareCenterNodes = doc.DocumentNode.SelectNodes("//div[@class='col-lg-6 profile']");
 
             foreach (HtmlNode table in dayCareCenterNodes)
             {
