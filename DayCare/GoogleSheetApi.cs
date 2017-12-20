@@ -53,7 +53,8 @@ namespace DayCare
             {
                 var subList = list.Where(x => x.FacilityInformation.County.Equals(r.Key)).ToList();
                 var workSheetName = DateTime.Now.ToString("yyyy-MM-dd HH-mm-ss");
-                var spreadsheetId = ConfigurationManager.AppSettings[r.Key.ToUpper()];// "1gXw3lPDojKWwtzRVLwSkBD0vUzJtoWnKVbY5cbHvaOg";
+                // var spreadsheetId = ConfigurationManager.AppSettings[r.Key.ToUpper()];// "1gXw3lPDojKWwtzRVLwSkBD0vUzJtoWnKVbY5cbHvaOg";
+                var spreadsheetId = "1kVeW2pbKhu1NvN8UpT6FpG05dpHxzuuJAi2X9Sd0n9A";// ConfigurationManager.AppSettings["1QF3BsrGgbouHbnNisvc6vs8LYzVIp62QU7G1tEzClcE"];
                 InitialSheet(workSheetName, spreadsheetId);
                 UpdateSheet(subList, workSheetName, spreadsheetId);
             }
@@ -95,7 +96,7 @@ namespace DayCare
                 "Licensee Name" , "Licensee Address", "Licensee Phone",
                 "License Number","License FacilityType","License Capacity","License EffectiveDate","License ExpirationDate","License PeriodOfOperation",
                 "DaysOpen Sunday","DaysOpen Monday","DaysOpen Tuesday","DaysOpen Wednesday","DaysOpen Thursday","DaysOpen Friday","DaysOpen Saturday",
-                "ServicesOffered FullDayProgram ServicesOffered Provides" };
+                "ServicesOffered FullDay", "ServicesOffered Provides" };
             var dataList = HandleData(list);
             valueRange.Values = new List<IList<object>> { oblist };
             foreach (var r in dataList)

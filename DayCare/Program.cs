@@ -26,9 +26,34 @@ namespace SheetsQuickstart
 
         static void Main(string[] args)
         {
-
-            ScapeSanData.MainFunc();
+            ScapreNewChildCenter();
             return;
+            //OldScapreVersion();
+        }
+        public static void ScapreNewChildCenter()
+        {
+            try
+            {
+                List<DayCareModel> list = new List<DayCareModel>();
+                DayCareLara lara = new DayCareLara();
+                list = lara.GetDataList();
+
+                LogHelper.log.Info("update data to google start");
+                GoogleSheetApi googleSheet = new GoogleSheetApi();
+                googleSheet.CreateNewSheet(list);
+                LogHelper.log.Info("update data to google finised");
+
+                Console.ReadKey();
+
+            }
+            catch(Exception ex)
+            {
+                LogHelper.log.Info(ex.ToString());
+                Console.WriteLine(ex.ToString());
+            }
+        }
+        public static void OldScapreVersion()
+        {
             List<DayCareModel> list = new List<DayCareModel>();
             try
             {
@@ -81,7 +106,7 @@ namespace SheetsQuickstart
                 #endregion
 
                 Console.WriteLine("Scrapte Data detail finished-" + DateTime.Now.ToString("o"));
-              
+
 
                 list = CompareWithPrevList(list);
 
