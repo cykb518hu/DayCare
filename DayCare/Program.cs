@@ -26,6 +26,9 @@ namespace SheetsQuickstart
 
         static void Main(string[] args)
         {
+
+            ScapeSanData.MainFunc();
+            return;
             List<DayCareModel> list = new List<DayCareModel>();
             try
             {

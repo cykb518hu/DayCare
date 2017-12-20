@@ -93,5 +93,39 @@ namespace DayCare
         false, false, Microsoft.Office.Interop.Excel.XlSaveAsAccessMode.xlNoChange,
         Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing);
         }
+
+        public static void  CreateLocalExcelForOnece(List<FACILITYARRAY> list, string type)
+        {
+
+            Microsoft.Office.Interop.Excel.Application xlApp = new Microsoft.Office.Interop.Excel.Application();
+            xlApp.Visible = true;
+            Workbook wb = xlApp.Workbooks.Add(XlWBATemplate.xlWBATWorksheet);
+            Worksheet ws = (Worksheet)wb.Worksheets[1];
+
+            ws.Cells[1, 1] = "Facility Name";
+            ws.Cells[1, 2] = "Facility Address";
+            ws.Cells[1, 3] = "Zip";
+            ws.Cells[1, 4] = "Status";
+            ws.Cells[1, 5] = "Facility Number";
+            ws.Cells[1, 6] = "Facility Phone";
+
+            int row = 2;
+            foreach (var r in list)
+            {
+                ws.Cells[row, 1] = r.FACILITYNAME;
+                ws.Cells[row, 2] = r.STREETADDRESS;
+                ws.Cells[row, 3] = r.ZIPCODE;
+                ws.Cells[row, 4] = r.STATUS;
+                ws.Cells[row, 5] = r.FACILITYNUMBER;
+                ws.Cells[row, 6] = r.TELEPHONE;
+
+                row++;
+            }
+            var file = ConfigurationManager.AppSettings.Get("LocalExcelPath").ToString();
+            file += type + Guid.NewGuid().ToString() + ".xlsx";
+            wb.SaveAs(file, Microsoft.Office.Interop.Excel.XlFileFormat.xlWorkbookDefault, Type.Missing, Type.Missing,
+        false, false, Microsoft.Office.Interop.Excel.XlSaveAsAccessMode.xlNoChange,
+        Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing);
+        }
     }
 }

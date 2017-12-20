@@ -68,19 +68,25 @@ namespace ZipCodeScrape
         static void Municiplity()
         {
             List<MuniciplityCounty> list = new List<MuniciplityCounty>();
-
             Dictionary<string, string> cityScrapeList = new Dictionary<string, string>();
-            var cityScrapeFileName = @"C:\TestCode\Project\SingleApplication\App_Data\city.json";
-            var json = File.ReadAllText(cityScrapeFileName);
-            var jobj = JArray.Parse(json);
+            string connectionString = ConfigurationManager.ConnectionStrings["LocalDB"].ToString();
 
-            foreach (var r in jobj)
+                string queryString = @"select * from city_temp";
+            using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                if (!cityScrapeList.ContainsKey(r["City"].ToString()))
+                SqlCommand command = new SqlCommand(queryString, connection);
+                connection.Open();
+                var reader = command.ExecuteReader();
+                while (reader.Read())
                 {
-                    cityScrapeList.Add(r["City"].ToString(), r["Date"].ToString());
+                    if (!cityScrapeList.ContainsKey(reader["city_nm"].ToString()))
+                    {
+                        cityScrapeList.Add(reader["city_nm"].ToString(), reader["deploye_date"].ToString());
+                    }
                 }
             }
+
+            
 
             Dictionary<string, string> wikeList = new Dictionary<string, string>();
             var url = string.Format("https://en.wikipedia.org/wiki/List_of_municipalities_in_Michigan_(by_population)");
@@ -150,10 +156,10 @@ namespace ZipCodeScrape
                 }
                 list.Add(data);
             }
-            string connectionString = ConfigurationManager.ConnectionStrings["LocalDB"].ToString();
+            connectionString = ConfigurationManager.ConnectionStrings["LocalDB"].ToString();
             foreach (var rr in list)
             {
-                string queryString = @"INSERT INTO CITY (DEPLOYE_DATE,SHORT_NM,COUNTY_NM,CITY_NM,typ,long_nm) VALUES('" + rr.DeployDate + "','" + rr.ShortNm + "','" + rr.County + "','" + rr.Municiplity + "','" + rr.Typ + "','" + rr.LongNm + "')";
+                 queryString = @"INSERT INTO CITY (DEPLOYE_DATE,SHORT_NM,COUNTY_NM,CITY_NM,typ,long_nm) VALUES('" + rr.DeployDate + "','" + rr.ShortNm + "','" + rr.County + "','" + rr.Municiplity + "','" + rr.Typ + "','" + rr.LongNm + "')";
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
                     SqlCommand command = new SqlCommand(queryString, connection);
