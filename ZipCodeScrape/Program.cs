@@ -19,14 +19,23 @@ namespace ZipCodeScrape
     {
         static void Main(string[] args)
         {
-            Municiplity();
+            List<string> userIds = new List<string>();
+            var laywerList = new List<LaywerModel>();
+
+            var str = File.ReadAllText(@"C:\IIS\test\data\zeekbeek\data.txt");
+        
+            var finalstr= JsonConvert.SerializeObject(userIds);
+            File.WriteAllText(@"C:\IIS\test\data\all.txt", finalstr);
+
             return;
+            Municiplity();
+           // return;
             var str = "480353652";
             if (str.Length > 5)
             {
                 str = str.Substring(0, 5);
             }
-            return;
+           // return;
             var countyZip = new CountyZipModel();
             var countyCode = ConfigurationManager.AppSettings.Get("countyCode").ToString();
 
@@ -182,5 +191,31 @@ namespace ZipCodeScrape
         public string LongNm { get; set; }
     }
 
+    public class LaywerModel
+    {
+        public string userId { get; set; }
+        public string Name { get; set; }
+        public string Surname { get; set; }
+        public string GivenName { get; set; }
+        public string MiddleName { get; set; }
+        public string DateOfAdmission { get; set; }
+        public string LicensedIn { get; set; }
+        public string Registration { get; set; }
+        public string Title { get; set; }
+
+        public string Telphone { get; set; }
+        public string Cellphone { get; set; }
+        public string Fax { get; set; }
+        public string Email { get; set; }
+        public string WebUrl { get; set; }
+        public string County { get; set; }
+        public string Country { get; set; }
+        public string Street { get; set; }
+        public string AddressLocality { get; set; }
+        public string Region { get; set; }
+        public string PostalCode { get; set; }
+
+        public string Org { get; set; }
+    }
 
 }

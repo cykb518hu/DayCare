@@ -1,0 +1,345 @@
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>b2258bdc-5805-4f47-bded-cb52ac4fddcb</ProjectGuid>
+    <ProjectHome>.</ProjectHome>
+    <StartupFile>PythonApplication1.py</StartupFile>
+    <SearchPath>
+    </SearchPath>
+    <WorkingDirectory>.</WorkingDirectory>
+    <OutputPath>.</OutputPath>
+    <Name>PythonApplication1</Name>
+    <RootNamespace>PythonApplication1</RootNamespace>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <DebugSymbols>true</DebugSymbols>
+    <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <DebugSymbols>true</DebugSymbols>
+    <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="module1.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="pppp\data\ExcelUtil_tool.py" />
+    <Compile Include="pppp\data\__init__.py" />
+    <Compile Include="pppp\demo\111.py" />
+    <Compile Include="pppp\demo\222.py" />
+    <Compile Include="pppp\demo\Ac.py" />
+    <Compile Include="pppp\demo\find_lan.py" />
+    <Compile Include="pppp\demo\json_data.py" />
+    <Compile Include="pppp\demo\new.py" />
+    <Compile Include="pppp\demo\offers.py" />
+    <Compile Include="pppp\demo\request_demo.py" />
+    <Compile Include="pppp\demo\room_list.py" />
+    <Compile Include="pppp\demo\sample.py" />
+    <Compile Include="pppp\demo\write_things_into_file.py" />
+    <Compile Include="pppp\demo\__init__.py" />
+    <Compile Include="pppp\demo\正则.py" />
+    <Compile Include="pppp\driver\browser.py" />
+    <Compile Include="pppp\driver\__init__.py" />
+    <Compile Include="pppp\Page\homepage.py" />
+    <Compile Include="pppp\Page\propertypage.py" />
+    <Compile Include="pppp\Page\room_detail_page.py" />
+    <Compile Include="pppp\Page\__init__.py" />
+    <Compile Include="pppp\runner.py" />
+    <Compile Include="pppp\testcase\test_offer\test_offer_hk.py" />
+    <Compile Include="pppp\testcase\test_offer\__init__.py" />
+    <Compile Include="pppp\testcase\test_room\test_room_detail.py" />
+    <Compile Include="pppp\testcase\test_room\test_room_new.py" />
+    <Compile Include="pppp\testcase\test_room\__init__.py" />
+    <Compile Include="pppp\testcase\__init__.py" />
+    <Compile Include="PythonApplication1.py" />
+    <Compile Include="Student.py">
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="pppp\" />
+    <Folder Include="pppp\.git\" />
+    <Folder Include="pppp\.git\hooks\" />
+    <Folder Include="pppp\.git\info\" />
+    <Folder Include="pppp\.git\logs\" />
+    <Folder Include="pppp\.git\logs\refs\" />
+    <Folder Include="pppp\.git\logs\refs\heads\" />
+    <Folder Include="pppp\.git\logs\refs\remotes\" />
+    <Folder Include="pppp\.git\logs\refs\remotes\origin\" />
+    <Folder Include="pppp\.git\objects\" />
+    <Folder Include="pppp\.git\objects\03\" />
+    <Folder Include="pppp\.git\objects\05\" />
+    <Folder Include="pppp\.git\objects\06\" />
+    <Folder Include="pppp\.git\objects\08\" />
+    <Folder Include="pppp\.git\objects\0d\" />
+    <Folder Include="pppp\.git\objects\11\" />
+    <Folder Include="pppp\.git\objects\15\" />
+    <Folder Include="pppp\.git\objects\1a\" />
+    <Folder Include="pppp\.git\objects\1f\" />
+    <Folder Include="pppp\.git\objects\23\" />
+    <Folder Include="pppp\.git\objects\26\" />
+    <Folder Include="pppp\.git\objects\27\" />
+    <Folder Include="pppp\.git\objects\2b\" />
+    <Folder Include="pppp\.git\objects\2d\" />
+    <Folder Include="pppp\.git\objects\33\" />
+    <Folder Include="pppp\.git\objects\34\" />
+    <Folder Include="pppp\.git\objects\36\" />
+    <Folder Include="pppp\.git\objects\39\" />
+    <Folder Include="pppp\.git\objects\3d\" />
+    <Folder Include="pppp\.git\objects\40\" />
+    <Folder Include="pppp\.git\objects\41\" />
+    <Folder Include="pppp\.git\objects\46\" />
+    <Folder Include="pppp\.git\objects\47\" />
+    <Folder Include="pppp\.git\objects\4c\" />
+    <Folder Include="pppp\.git\objects\4d\" />
+    <Folder Include="pppp\.git\objects\55\" />
+    <Folder Include="pppp\.git\objects\59\" />
+    <Folder Include="pppp\.git\objects\5b\" />
+    <Folder Include="pppp\.git\objects\5c\" />
+    <Folder Include="pppp\.git\objects\5d\" />
+    <Folder Include="pppp\.git\objects\64\" />
+    <Folder Include="pppp\.git\objects\66\" />
+    <Folder Include="pppp\.git\objects\68\" />
+    <Folder Include="pppp\.git\objects\69\" />
+    <Folder Include="pppp\.git\objects\6f\" />
+    <Folder Include="pppp\.git\objects\70\" />
+    <Folder Include="pppp\.git\objects\73\" />
+    <Folder Include="pppp\.git\objects\74\" />
+    <Folder Include="pppp\.git\objects\75\" />
+    <Folder Include="pppp\.git\objects\79\" />
+    <Folder Include="pppp\.git\objects\7a\" />
+    <Folder Include="pppp\.git\objects\7c\" />
+    <Folder Include="pppp\.git\objects\92\" />
+    <Folder Include="pppp\.git\objects\94\" />
+    <Folder Include="pppp\.git\objects\97\" />
+    <Folder Include="pppp\.git\objects\98\" />
+    <Folder Include="pppp\.git\objects\a3\" />
+    <Folder Include="pppp\.git\objects\a5\" />
+    <Folder Include="pppp\.git\objects\a6\" />
+    <Folder Include="pppp\.git\objects\a7\" />
+    <Folder Include="pppp\.git\objects\aa\" />
+    <Folder Include="pppp\.git\objects\ac\" />
+    <Folder Include="pppp\.git\objects\b2\" />
+    <Folder Include="pppp\.git\objects\b4\" />
+    <Folder Include="pppp\.git\objects\bb\" />
+    <Folder Include="pppp\.git\objects\be\" />
+    <Folder Include="pppp\.git\objects\c1\" />
+    <Folder Include="pppp\.git\objects\c7\" />
+    <Folder Include="pppp\.git\objects\ca\" />
+    <Folder Include="pppp\.git\objects\cc\" />
+    <Folder Include="pppp\.git\objects\cd\" />
+    <Folder Include="pppp\.git\objects\cf\" />
+    <Folder Include="pppp\.git\objects\d2\" />
+    <Folder Include="pppp\.git\objects\d3\" />
+    <Folder Include="pppp\.git\objects\d4\" />
+    <Folder Include="pppp\.git\objects\d6\" />
+    <Folder Include="pppp\.git\objects\d8\" />
+    <Folder Include="pppp\.git\objects\da\" />
+    <Folder Include="pppp\.git\objects\db\" />
+    <Folder Include="pppp\.git\objects\dd\" />
+    <Folder Include="pppp\.git\objects\df\" />
+    <Folder Include="pppp\.git\objects\e0\" />
+    <Folder Include="pppp\.git\objects\e4\" />
+    <Folder Include="pppp\.git\objects\e5\" />
+    <Folder Include="pppp\.git\objects\e6\" />
+    <Folder Include="pppp\.git\objects\e7\" />
+    <Folder Include="pppp\.git\objects\eb\" />
+    <Folder Include="pppp\.git\objects\ec\" />
+    <Folder Include="pppp\.git\objects\f1\" />
+    <Folder Include="pppp\.git\objects\f5\" />
+    <Folder Include="pppp\.git\objects\f6\" />
+    <Folder Include="pppp\.git\objects\f7\" />
+    <Folder Include="pppp\.git\objects\f8\" />
+    <Folder Include="pppp\.git\objects\fa\" />
+    <Folder Include="pppp\.git\objects\ff\" />
+    <Folder Include="pppp\.git\objects\info\" />
+    <Folder Include="pppp\.git\objects\pack\" />
+    <Folder Include="pppp\.git\refs\" />
+    <Folder Include="pppp\.git\refs\heads\" />
+    <Folder Include="pppp\.git\refs\remotes\" />
+    <Folder Include="pppp\.git\refs\remotes\origin\" />
+    <Folder Include="pppp\.git\refs\tags\" />
+    <Folder Include="pppp\.idea\" />
+    <Folder Include="pppp\data\" />
+    <Folder Include="pppp\data\__pycache__\" />
+    <Folder Include="pppp\demo\" />
+    <Folder Include="pppp\demo\__pycache__\" />
+    <Folder Include="pppp\driver\" />
+    <Folder Include="pppp\driver\__pycache__\" />
+    <Folder Include="pppp\Page\" />
+    <Folder Include="pppp\Page\__pycache__\" />
+    <Folder Include="pppp\report\" />
+    <Folder Include="pppp\testcase\" />
+    <Folder Include="pppp\testcase\test_offer\" />
+    <Folder Include="pppp\testcase\test_offer\__pycache__\" />
+    <Folder Include="pppp\testcase\test_room\" />
+    <Folder Include="pppp\testcase\test_room\__pycache__\" />
+    <Folder Include="pppp\testcase\__pycache__\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="pppp\.git\COMMIT_EDITMSG" />
+    <Content Include="pppp\.git\config" />
+    <Content Include="pppp\.git\description" />
+    <Content Include="pppp\.git\FETCH_HEAD" />
+    <Content Include="pppp\.git\HEAD" />
+    <Content Include="pppp\.git\hooks\applypatch-msg.sample" />
+    <Content Include="pppp\.git\hooks\commit-msg.sample" />
+    <Content Include="pppp\.git\hooks\fsmonitor-watchman.sample" />
+    <Content Include="pppp\.git\hooks\post-update.sample" />
+    <Content Include="pppp\.git\hooks\pre-applypatch.sample" />
+    <Content Include="pppp\.git\hooks\pre-commit.sample" />
+    <Content Include="pppp\.git\hooks\pre-push.sample" />
+    <Content Include="pppp\.git\hooks\pre-rebase.sample" />
+    <Content Include="pppp\.git\hooks\pre-receive.sample" />
+    <Content Include="pppp\.git\hooks\prepare-commit-msg.sample" />
+    <Content Include="pppp\.git\hooks\update.sample" />
+    <Content Include="pppp\.git\index" />
+    <Content Include="pppp\.git\info\exclude" />
+    <Content Include="pppp\.git\logs\HEAD" />
+    <Content Include="pppp\.git\logs\refs\heads\master" />
+    <Content Include="pppp\.git\logs\refs\remotes\origin\master" />
+    <Content Include="pppp\.git\objects\03\5902da4e07e1604b1aeecfcf07c6ab0c124943" />
+    <Content Include="pppp\.git\objects\05\de7a72d041ae0ad9a1721a7d47f4c98c4f6c66" />
+    <Content Include="pppp\.git\objects\06\e9ba4a4a61d689b105c8d82f1d2bd7d5bb392c" />
+    <Content Include="pppp\.git\objects\08\950e040628b3bf7319136133029f6d398c5bed" />
+    <Content Include="pppp\.git\objects\0d\4a0b90f3e9383aad37e72ffdb96a31b2bf18c7" />
+    <Content Include="pppp\.git\objects\11\13226d6aaa69a2232d6ba6a9f56dbe5714216b" />
+    <Content Include="pppp\.git\objects\15\274a71613cd6bac0e8602d5fb25b3a67b35ae4" />
+    <Content Include="pppp\.git\objects\15\a15b218a29e09c9190992732698d646e4d659a" />
+    <Content Include="pppp\.git\objects\1a\37f9b9d3591cf7cc257e30a0ea779a32515e42" />
+    <Content Include="pppp\.git\objects\1f\5b46fc32aab8b6b0ce47a93ceff33d076bbf6c" />
+    <Content Include="pppp\.git\objects\23\70f5ce063091755c50af826c7b88953c623e49" />
+    <Content Include="pppp\.git\objects\26\b7f88e66505b9b63123a0c72c7cc44a5c30ad1" />
+    <Content Include="pppp\.git\objects\27\09a4e32bb25cb6e97047dca81335dfb0c2a303" />
+    <Content Include="pppp\.git\objects\2b\ce2e33bca0895a2a1c36ae7e2d80314205e99c" />
+    <Content Include="pppp\.git\objects\2d\0674f6aa1517388aab30fa564f41af8b6677b3" />
+    <Content Include="pppp\.git\objects\2d\7e2d7d7e890e2f994fec23fee7f8641c074662" />
+    <Content Include="pppp\.git\objects\2d\cf9d2dc3730f1c5256e6db3c6499ede1a33ecc" />
+    <Content Include="pppp\.git\objects\33\b3760c004b6f9b0be37185ac073caf3f6e2bf0" />
+    <Content Include="pppp\.git\objects\34\61c9e945ff7e082089fe4192fba04a64e7bd53" />
+    <Content Include="pppp\.git\objects\36\bd7c531270b149a4307afb69e527c1b5ed7002" />
+    <Content Include="pppp\.git\objects\39\9908725e98df33985c097a1987083c3b85a580" />
+    <Content Include="pppp\.git\objects\3d\4136552c48bdad9e09b98b50cf798b9ee1f4e1" />
+    <Content Include="pppp\.git\objects\3d\8e850ce6dcac03fe8432003952e0bdeccde8fd" />
+    <Content Include="pppp\.git\objects\40\ef8167321e93889cf662fc2d08df80e829d566" />
+    <Content Include="pppp\.git\objects\41\6c315d55a5b5902744f6f4f71bfa08e8d93192" />
+    <Content Include="pppp\.git\objects\41\8850dc75a1f40c7003dd70287f9398bfe244ad" />
+    <Content Include="pppp\.git\objects\41\92fa37df33513ee7849ab7546552df932bcb1a" />
+    <Content Include="pppp\.git\objects\46\7bc79782d79825d233b854c3262b2979aa7a96" />
+    <Content Include="pppp\.git\objects\47\d76c2c4a0b7e047c2d1199dfec85f2fe46bfe9" />
+    <Content Include="pppp\.git\objects\4c\d1706f3654471e2c22504bb76fd44e1c1353ab" />
+    <Content Include="pppp\.git\objects\4d\ea7577e8f10ad7c8a4acd9933c144b8375324a" />
+    <Content Include="pppp\.git\objects\55\9a21d7eeaab3785055b737ff7475e5d365ac6e" />
+    <Content Include="pppp\.git\objects\59\5563fcabb2bda25aaa131e1575e577341a111a" />
+    <Content Include="pppp\.git\objects\5b\d957ac3ee1efcb85da0e08e477e4d09edbce44" />
+    <Content Include="pppp\.git\objects\5c\1a9bdc66190cb5d2f62010d41933521c1ed7c4" />
+    <Content Include="pppp\.git\objects\5c\b8a2ca498120bbbb9e0880894287e6016f0033" />
+    <Content Include="pppp\.git\objects\5d\1d78ac1ae81f5e6447d74a642420b7ef165c11" />
+    <Content Include="pppp\.git\objects\5d\dc5b10454f4200b888e32eac8a4e98e96ba614" />
+    <Content Include="pppp\.git\objects\64\461aeb84e1e825fdd9bb6bfe52f036e7db4538" />
+    <Content Include="pppp\.git\objects\66\f3dcfeb2d578af63f6efd10f7912b2df968683" />
+    <Content Include="pppp\.git\objects\68\d30b13b8620c38e31759002a0525d3f6c24198" />
+    <Content Include="pppp\.git\objects\69\9b3e2642d895caa41378331b00a14d88c687dd" />
+    <Content Include="pppp\.git\objects\6f\59d204955740c930c1b527cf9449e4df1cbbe1" />
+    <Content Include="pppp\.git\objects\70\a7aec6fabf7c2324f5b40285d81339e5dd6444" />
+    <Content Include="pppp\.git\objects\73\25ccef85594c6cd0ac513671f98286adc8e804" />
+    <Content Include="pppp\.git\objects\74\3c1218cb3bdc5eddec6a04780a5293015bbe83" />
+    <Content Include="pppp\.git\objects\75\e7000aabbdd02c305e087e817a1a059dec0c5a" />
+    <Content Include="pppp\.git\objects\79\0fdb416f36e3f9e26396ea42e27335703fcde5" />
+    <Content Include="pppp\.git\objects\7a\1a233eac94f36bfa860454e71b8fcd29c54f45" />
+    <Content Include="pppp\.git\objects\7c\19543e93728a3b82ad270383813d1d83dc7f31" />
+    <Content Include="pppp\.git\objects\92\3aee9e95f948a3c9b2ac592f6eea29d92d32d7" />
+    <Content Include="pppp\.git\objects\92\eac1ad7c73831e71ed883a0c493f8ac4041e00" />
+    <Content Include="pppp\.git\objects\94\a25f7f4cb416c083d265558da75d457237d671" />
+    <Content Include="pppp\.git\objects\97\108556b180b23794df19be6b2e5f2816d4952a" />
+    <Content Include="pppp\.git\objects\97\16997fef2a325d08f8eb3d94a8afabf1960714" />
+    <Content Include="pppp\.git\objects\98\732d142c54c4321e1719188dc4b8846c159790" />
+    <Content Include="pppp\.git\objects\a3\f0b6e9c0414ad91c81db8f3ea767663b8a602f" />
+    <Content Include="pppp\.git\objects\a5\4680f4c3634f5bccff974788c14e1d1a6ec59d" />
+    <Content Include="pppp\.git\objects\a5\cf043bf02294ab143f13b912b56af6f0981ca4" />
+    <Content Include="pppp\.git\objects\a6\0e5c7b218064de32cd2589d39c14248f2b092e" />
+    <Content Include="pppp\.git\objects\a7\0ccbd7e7b407f956de4469bdaabe8ef51c2069" />
+    <Content Include="pppp\.git\objects\aa\44db9ad71f224fb59de393011cfe567e6a9021" />
+    <Content Include="pppp\.git\objects\ac\e68303fc18b264fd8a50203f03d47804a5dbc5" />
+    <Content Include="pppp\.git\objects\b2\b58f3a40a6ea186a29707bad551d911c694b0f" />
+    <Content Include="pppp\.git\objects\b4\d8b62d20fabc86a133873594209dc8066547f4" />
+    <Content Include="pppp\.git\objects\bb\cedb12204e148995e0338ef2bcc9ae5b3cbeb2" />
+    <Content Include="pppp\.git\objects\be\0214e86b552846f06ee72a5c562214500ff998" />
+    <Content Include="pppp\.git\objects\c1\e08dbce5e9be08946087dc7934f2e18b8b6305" />
+    <Content Include="pppp\.git\objects\c7\afc1d7868456fdff4355cfd0c9ada9cb64198b" />
+    <Content Include="pppp\.git\objects\ca\825110c775a01d89c151acbc09b0afd97d2694" />
+    <Content Include="pppp\.git\objects\ca\dbd5fe32be8efb03fef58807decfb7d911f133" />
+    <Content Include="pppp\.git\objects\cc\369be2799e3e2dae92e8190518c736f24402b2" />
+    <Content Include="pppp\.git\objects\cd\c62a130632b9c1bce2a640b0399c446cbc92bc" />
+    <Content Include="pppp\.git\objects\cf\5b5ab3d731a162fa8d3ebac58e07125c1bba82" />
+    <Content Include="pppp\.git\objects\d2\59d60117de4cd06909e54290590191d0dfffe8" />
+    <Content Include="pppp\.git\objects\d3\dbe05e138979c12279517e3c49c8fdf8413242" />
+    <Content Include="pppp\.git\objects\d4\2e36c09235d4d3723d5d828537528a243d3c60" />
+    <Content Include="pppp\.git\objects\d6\d0bc59caaae39b6c4c69f48cff96c08c30ba1e" />
+    <Content Include="pppp\.git\objects\d6\d82ea5598966322ffd06968c5e30437121adf6" />
+    <Content Include="pppp\.git\objects\d8\4cb5af521fd3243b50b425d4a00bf1fa475070" />
+    <Content Include="pppp\.git\objects\da\caaf478b97d92249e8c67eff3a770782021b22" />
+    <Content Include="pppp\.git\objects\db\8211754788669712474d4f6e6bfc32a96c501c" />
+    <Content Include="pppp\.git\objects\dd\0fedb64dea27dbe214019ab1bc0781159b1d34" />
+    <Content Include="pppp\.git\objects\dd\61c1eb971bd343f6b9f2bbf70235b2ed650e03" />
+    <Content Include="pppp\.git\objects\dd\e9b9d9016053571e661b30f8b3d3932ea0a25d" />
+    <Content Include="pppp\.git\objects\df\fcb9687ddbcc50bfbe48dad7aba32666304904" />
+    <Content Include="pppp\.git\objects\e0\d3a9ab638a6cad44ad9605e253b0f0f8e88828" />
+    <Content Include="pppp\.git\objects\e4\71794e03a0e7004c611241ee1a9f545824cf6a" />
+    <Content Include="pppp\.git\objects\e5\b4fbbe8d8367c3deb1812db984fe8f4018fc15" />
+    <Content Include="pppp\.git\objects\e6\9de29bb2d1d6434b8b29ae775ad8c2e48c5391" />
+    <Content Include="pppp\.git\objects\e7\45928ca6aa29addee915ed68a70f3d29b4a33d" />
+    <Content Include="pppp\.git\objects\eb\172954319cc8272b50753ac0ac0d9614c1d1f3" />
+    <Content Include="pppp\.git\objects\ec\43d23144512626303918b860b094f8caf82f40" />
+    <Content Include="pppp\.git\objects\f1\d4adb65405ea06852213013bdda7bc7cfb1806" />
+    <Content Include="pppp\.git\objects\f5\a9fe6e0420b594e1f350689d25d3a7374ce095" />
+    <Content Include="pppp\.git\objects\f6\6ee9ea8bd5e828e09c9fa3fc3df3ecf1f29f8a" />
+    <Content Include="pppp\.git\objects\f7\878156d19193468af722cdd106b5fa86b34d69" />
+    <Content Include="pppp\.git\objects\f8\d4370248b1faebe6017e8bbe3ad813c49b9dea" />
+    <Content Include="pppp\.git\objects\fa\4d7bf538538804a7dd793bfe83b0e2c59dfc67" />
+    <Content Include="pppp\.git\objects\ff\137412f51cff3f2258690ccf0223f078c97351" />
+    <Content Include="pppp\.git\ORIG_HEAD" />
+    <Content Include="pppp\.git\refs\heads\master" />
+    <Content Include="pppp\.git\refs\remotes\origin\master" />
+    <Content Include="pppp\.idea\encodings.xml" />
+    <Content Include="pppp\.idea\misc.xml" />
+    <Content Include="pppp\.idea\modules.xml" />
+    <Content Include="pppp\.idea\peninsula.iml" />
+    <Content Include="pppp\.idea\vcs.xml" />
+    <Content Include="pppp\.idea\workspace.xml" />
+    <Content Include="pppp\data\1.txt" />
+    <Content Include="pppp\data\bookingdata.json" />
+    <Content Include="pppp\data\email&amp;password.xlsx" />
+    <Content Include="pppp\data\__pycache__\ExcelUtil_tool.cpython-36.pyc" />
+    <Content Include="pppp\data\__pycache__\__init__.cpython-36.pyc" />
+    <Content Include="pppp\demo\geckodriver.log" />
+    <Content Include="pppp\demo\__pycache__\find_lan.cpython-36.pyc" />
+    <Content Include="pppp\demo\__pycache__\__init__.cpython-36.pyc" />
+    <Content Include="pppp\driver\__pycache__\browser.cpython-36.pyc" />
+    <Content Include="pppp\driver\__pycache__\browser.cpython-37.pyc" />
+    <Content Include="pppp\driver\__pycache__\__init__.cpython-36.pyc" />
+    <Content Include="pppp\driver\__pycache__\__init__.cpython-37.pyc" />
+    <Content Include="pppp\geckodriver.log" />
+    <Content Include="pppp\Page\__pycache__\homepage.cpython-36.pyc" />
+    <Content Include="pppp\Page\__pycache__\propertypage.cpython-36.pyc" />
+    <Content Include="pppp\Page\__pycache__\room_detail_page.cpython-36.pyc" />
+    <Content Include="pppp\Page\__pycache__\__init__.cpython-36.pyc" />
+    <Content Include="pppp\report\Test Report.html" />
+    <Content Include="pppp\testcase\test_offer\__pycache__\test_offer_hk.cpython-36.pyc" />
+    <Content Include="pppp\testcase\test_offer\__pycache__\__init__.cpython-36.pyc" />
+    <Content Include="pppp\testcase\test_room\__pycache__\test_room_detail.cpython-36.pyc" />
+    <Content Include="pppp\testcase\test_room\__pycache__\test_room_new.cpython-36.pyc" />
+    <Content Include="pppp\testcase\test_room\__pycache__\__init__.cpython-36.pyc" />
+    <Content Include="pppp\testcase\__pycache__\__init__.cpython-36.pyc" />
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
+  <!-- Uncomment the CoreCompile target to enable the Build command in
+       Visual Studio and specify your pre- and post-build commands in
+       the BeforeBuild and AfterBuild targets below. -->
+  <!--<Target Name="CoreCompile" />-->
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+</Project>
