@@ -1,4 +1,6 @@
-﻿using System;
+﻿using OpenQA.Selenium;
+using OpenQA.Selenium.Chrome;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -23,8 +25,10 @@ namespace WebApplication1.Controllers
 
         public ActionResult About()
         {
-            var at = new HttpHanlderOrg();
-            at.GetFinalHtml();
+       
+
+            var at = new AdyenHttpService();
+            at.DownLoadVCFFile();
             // var data = at.GetList();
             ViewBag.Message = "success";
          
@@ -34,8 +38,8 @@ namespace WebApplication1.Controllers
 
         public ActionResult Contact()
         {
-            var at = new AdyenHttpService();
-            at.GetFinalHtml();
+          //  var at = new AdyenHttpService();
+          //  at.GetFinalHtml();
             LogHelper.log.Error("update data to google start");
             ViewBag.Message = "Your contact page.";
 

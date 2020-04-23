@@ -1,5 +1,7 @@
 ﻿using HtmlAgilityPack;
 using Newtonsoft.Json;
+using OpenQA.Selenium;
+using OpenQA.Selenium.Chrome;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -45,6 +47,48 @@ namespace WebApplication1
                 File.AppendAllText(@"C:\IIS\zeekbeek\data.txt", JsonConvert.SerializeObject(listData));
             }
 
+        }
+
+        public void DownLoadVCFFile()
+        {
+            // FileIn
+           var  oldlaywerList = JsonConvert.DeserializeObject<List<LaywerModel>>(File.ReadAllText(@"C:\IIS\zeekbeek\40000-45000.txt"));
+            try
+            {
+                int startNumber = 0;
+       
+                var folderName = @"C:\IIS\zeekbeek\vcf\30000\";
+                while (startNumber < oldlaywerList.Count-1)
+                {
+                    var laywer = oldlaywerList[startNumber];
+                    if (startNumber % 100 == 0)
+                    {
+                        File.AppendAllText(@"C:\IIS\zeekbeek\normalLog.txt", "start Number:" + startNumber + "  start time:" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "\r\n");
+                    }
+                    var fileName = folderName + laywer.Registration + ".vcf";
+
+                    if (File.Exists(fileName))
+                    {
+                        ReadFromVcard(laywer, fileName);
+                        File.Delete(fileName);
+                    }
+                    else
+                    {
+                        File.AppendAllText(@"C:\IIS\zeekbeek\error.txt", fileName + ": DownLoadVCFFile not found:" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "\r\n");
+                    }
+                    startNumber++;
+                }
+            }
+            catch (Exception ex)
+            {
+
+                File.AppendAllText(@"C:\IIS\zeekbeek\error.txt", "DownLoadVCFFile exception:" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "\r\n");
+                File.AppendAllText(@"C:\IIS\zeekbeek\error.txt", ex.ToString() + "\r\n");
+            }
+            finally
+            {
+                File.AppendAllText(@"C:\IIS\zeekbeek\subdata.txt", JsonConvert.SerializeObject(oldlaywerList));
+            }
         }
         public string GetUserList(int page)
         {
@@ -186,27 +230,11 @@ namespace WebApplication1
         }
 
 
-        public void ReadFromVcard(LaywerModel laywer,string userId)
+        public void ReadFromVcard(LaywerModel laywer, string file)
         {
             try
             {
-                var html = "";
-                var url = "http://www.zeekbeek.com/vcard.ashx?userId=" + userId;
-                File.AppendAllText(@"C:\IIS\zeekbeek\normalLog.txt", url + "\r\n");
-                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
-                request.Method = "GET";
-
-                using (var response = (HttpWebResponse)request.GetResponse())
-                {
-                    using (var reader = new StreamReader(response.GetResponseStream()))
-                    {
-                        html = reader.ReadToEnd();
-                    }
-                }
-                File.AppendAllText(@"C:\IIS\zeekbeek\normalLog.txt", html + "\r\n");
-                // var file = @"C:\IIS\zeekbeek\P36344.vcf";
-                var dataArr = html.Split(new string[] { "\r\n" }, StringSplitOptions.None).ToList();
-                //var dataArr = File.ReadAllLines(file);
+                var dataArr = File.ReadAllLines(file);
                 foreach (var str in dataArr)
                 {
                     if (str.StartsWith("N:"))
@@ -219,13 +247,13 @@ namespace WebApplication1
                             laywer.MiddleName = name[2];
                         }
                     }
-                    if (str.StartsWith("FN:"))
-                    {
-                        laywer.Name = str.Replace("FN:", "");
-                    }
+                  //  if (str.StartsWith("FN:"))
+                  //  {
+                    //    laywer.Name = str.Replace("FN:", "");
+                   // }
                     if (str.StartsWith("ORG:"))
                     {
-                        laywer.Org = str.Replace("ORG:", ""); ;
+                        laywer.Org = str.Replace("ORG:", "").Replace(";", "");
                     }
                     if (str.StartsWith("TITLE:"))
                     {
@@ -238,6 +266,10 @@ namespace WebApplication1
                     if (str.StartsWith("URL;WORK:"))
                     {
                         laywer.WebUrl = str.Replace("URL;WORK:", "");
+                    }
+                    if (str.StartsWith("URL;PREF;WORK:"))
+                    {
+                        laywer.ZeekBeekUrl = str.Replace("URL;PREF;WORK:", "");
                     }
                     if (str.StartsWith("TEL;WORK;FAX:"))
                     {
@@ -302,6 +334,7 @@ namespace WebApplication1
         public string Cellphone { get; set; }
         public string Fax { get; set; }
         public string Email { get; set; }
+        public string ZeekBeekUrl { get; set; }
         public string WebUrl { get; set; }
         public string County { get; set; }
         public string Country { get; set; }
