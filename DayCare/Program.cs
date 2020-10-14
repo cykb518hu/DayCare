@@ -26,7 +26,8 @@ namespace SheetsQuickstart
 
         static void Main(string[] args)
         {
-            ScapreNewChildCenter();
+            ReadDisease.GetData();
+           // ScapreNewChildCenter();
             return;
             //OldScapreVersion();
         }
